@@ -1,12 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const { Authors } = require("../models");
+const { Authors, Books } = require("../models");
 
 //GET: Retrieve a list of all authors
 
 router.get("/", async (req, res) => {
   try {
-    const listOfAuthors = await Authors.findAll();
+    const listOfAuthors = await Authors.findAll({
+      include: {
+        model: Books,
+        attributes: ["book_id", "title"], // Specify the attributes you want to retrieve from Author table
+      },
+    });
     res.json(listOfAuthors);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -17,7 +22,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const authorById = await Authors.findByPk();
+    const authorById = await Authors.findByPk(req.params.id);
     if (authorById) {
       res.json(authorById);
     } else {
@@ -45,7 +50,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const [updated] = await Authors.update(req.body, {
-      where: { id: req.params.id },
+      where: { author_id: req.params.id },
     });
     if (updated) {
       const updatedAuthor = await Authors.findByPk(req.params.id);
@@ -63,9 +68,10 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const deleted = await Authors.destroy({
-      where: { id: req.params.id },
+      where: { author_id: req.params.id },
     });
     if (deleted) {
+      res.json({ message: "Author deleted successfully" });
       res.status(204).end();
     } else {
       res.status(404).json({ error: "Author not found" });

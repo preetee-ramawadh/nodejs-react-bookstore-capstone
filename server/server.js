@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+
 app.use(express.json());
+app.use(cors());
 
 const chalk = require("chalk");
 const PORT = 5000;
@@ -25,6 +28,11 @@ db.sequelize
   .then(() => {
     console.log(chalk.green("Models synchronized successfully."));
   })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server Running on Port ${chalk.green(PORT)}`);
+    });
+  })
   .catch((err) => {
     console.error(`Error synchronizing models: ${chalk.red(err)}`);
   });
@@ -37,7 +45,3 @@ const genresRouter = require("./routes/Genres");
 app.use("/books", booksRouter);
 app.use("/authors", authorsRouter);
 app.use("/genres", genresRouter);
-
-app.listen(PORT, () => {
-  console.log(`Server Running on Port ${chalk.green(PORT)}`);
-});
