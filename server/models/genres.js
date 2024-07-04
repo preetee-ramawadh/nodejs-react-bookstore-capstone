@@ -1,12 +1,11 @@
-//const Books = require("./books");
-
 module.exports = (sequelize, DataTypes) => {
   const Genres = sequelize.define("Genres", {
     genre_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      //defaultValue: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     genre_name: {
       type: DataTypes.STRING,

@@ -1,21 +1,39 @@
 module.exports = (sequelize, DataTypes) => {
   const Books = sequelize.define("Books", {
     book_id: {
+      // type: DataTypes.UUID,
+      // defaultValue: DataTypes.INTEGER,
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false,
       autoIncrement: true,
+      allowNull: false,
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    author_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "authors",
+        key: "author_id",
+      },
+    },
+    genre_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "genres",
+        key: "genre_id",
+      },
     },
     price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     publication_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   });
@@ -34,6 +52,9 @@ module.exports = (sequelize, DataTypes) => {
       // onUpdate: 'CASCADE' // If author_id is updated, update profile
     });
   };
+
+  //Book.belongsTo(sequelize.models.Author, { foreignKey: "author_id" });
+  //Book.belongsTo(sequelize.models.Genre, { foreignKey: "genre_id" });
 
   return Books;
 };

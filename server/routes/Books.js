@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
 });
 
 //GET: Retrieve details of a specific book
-/*
+
 router.get("/:id", async (req, res) => {
   try {
     const bookById = await Books.findByPk(req.params.id, {
@@ -42,7 +42,7 @@ router.get("/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}); */
+});
 
 //POST: Add a new book
 

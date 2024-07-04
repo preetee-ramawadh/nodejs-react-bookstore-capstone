@@ -26,6 +26,7 @@ db.sequelize
 db.sequelize
   .sync()
   .then(() => {
+    //is there a way to give sequence or order in which models should be synced
     console.log(chalk.green("Models synchronized successfully."));
   })
   .then(() => {

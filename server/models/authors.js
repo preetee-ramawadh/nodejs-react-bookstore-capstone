@@ -4,9 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   const Authors = sequelize.define("Authors", {
     author_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      //defaultValue: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
