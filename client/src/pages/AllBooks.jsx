@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import BookDetails from "./BookDetails";
 import DeleteAlert from "./DeleteAlert";
+import Add from "./Add";
 
 export default function AllBooks() {
   const [listOfBooks, setListOfBooks] = useState([]);
@@ -16,6 +17,8 @@ export default function AllBooks() {
   const [alertShow, setAlertShow] = useState(false);
 
   const [deleteYes, setDeleteYes] = useState(false);
+
+  const [addShow, setAddShow] = useState(false);
 
   useEffect(() => {
     fetchBooksData();
@@ -74,6 +77,9 @@ export default function AllBooks() {
       }
     }
   };
+  const addBook = () => {
+    setAddShow(true);
+  };
 
   return (
     <div className="row">
@@ -83,11 +89,25 @@ export default function AllBooks() {
         setDeleteYes={setDeleteYes}
         value="Book"
       />
+      <Button
+        variant="primary"
+        onClick={() => addBook()}
+        className="shadow btn btn-success border border-secondary"
+      >
+        ADD BOOK
+      </Button>
+
+      <Add
+        addShow={addShow}
+        setAddShow={setAddShow}
+        listOfBooks={listOfBooks}
+        setListOfBooks={setListOfBooks}
+      />
 
       {listOfBooks?.length > 0 ? (
         listOfBooks.map((book, key) => {
           return (
-            <div key={key} className="col m-2">
+            <div key={key} className="d-flex col m-3">
               <Card style={{ width: "18rem" }} className="shadow">
                 <Card.Img
                   variant="top"

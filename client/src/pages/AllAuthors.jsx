@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AuthorDetails from "./AuthorDetails";
 import Spinner from "./Spinner";
 import DeleteAlert from "./DeleteAlert";
+import AddAuthor from "./AddAuthor";
 
 export default function AllAuthors() {
   const [listOfAuthors, setListOfAuthors] = useState([]);
@@ -17,6 +18,8 @@ export default function AllAuthors() {
   const [alertShow, setAlertShow] = useState(false);
 
   const [deleteYes, setDeleteYes] = useState(false);
+
+  const [addShow, setAddShow] = useState(false);
 
   useEffect(() => {
     const fetchAuthorsData = async () => {
@@ -81,6 +84,10 @@ export default function AllAuthors() {
     }
   };
 
+  // const addAuthor = () => {
+  //   setAddShow(true);
+  // };
+
   return (
     <div className="row">
       <DeleteAlert
@@ -89,10 +96,25 @@ export default function AllAuthors() {
         setDeleteYes={setDeleteYes}
         value="Author"
       />
+      <Button
+        variant="primary"
+        onClick={() => setAddShow(true)}
+        className="shadow btn btn-success border border-secondary"
+      >
+        ADD Author
+      </Button>
+
+      <AddAuthor
+        addShow={addShow}
+        setAddShow={setAddShow}
+        listOfAuthors={listOfAuthors}
+        setListOfAuthors={setListOfAuthors}
+      />
+
       {listOfAuthors?.length > 0 ? (
         listOfAuthors.map((author, key) => {
           return (
-            <div key={key} className="col m-2">
+            <div key={key} className="d-flex col m-2">
               <Card
                 style={{
                   width: "18rem",
