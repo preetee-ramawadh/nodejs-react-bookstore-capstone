@@ -9,7 +9,7 @@ import * as yup from "yup";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 
-export default function Add({
+export default function AddBook({
   addShow,
   setAddShow,
   listOfBooks,
@@ -123,11 +123,11 @@ export default function Add({
         onSubmit={onSubmitAddBook}
         validationSchema={schema}
       >
-        {({ handleSubmit, handleChange, isSubmitting, values, errors }) => (
+        {({ handleSubmit, handleChange, isSubmitting, errors }) => (
           <Form
             noValidate
             onSubmit={handleSubmit}
-            className="mt-3 border border-secondary border-2 shadow"
+            className="mt-3 border border-secondary border-2 shadow bg-secondary bg-opacity-25"
           >
             <Row className="mb-3 mt-2">
               <Form.Group as={Col} controlId="validationFormik01" md="6">
@@ -148,6 +148,7 @@ export default function Add({
                       isInvalid={!!errors.title}
                       required
                       autoComplete="off"
+                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.title}
@@ -166,7 +167,9 @@ export default function Add({
                     name="author_id"
                     onChange={handleChange}
                     isInvalid={!!errors.author_id}
+                    className="shadow"
                   >
+                    <option value="">Select an Author</option>
                     {mappedAuthors?.map((author) => {
                       return (
                         <option key={author.id} value={author.id}>
@@ -191,7 +194,9 @@ export default function Add({
                     name="genre_id"
                     onChange={handleChange}
                     isInvalid={!!errors.genre_id}
+                    className="shadow"
                   >
+                    <option value="">Select a Genre</option>
                     {mappedGenres?.map((genre) => {
                       return (
                         <option key={genre.id} value={genre.id}>
@@ -226,6 +231,7 @@ export default function Add({
                       isInvalid={!!errors.price}
                       required
                       autoComplete="off"
+                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.price}
@@ -252,6 +258,7 @@ export default function Add({
                       isInvalid={!!errors.publication_date}
                       required
                       autoComplete="off"
+                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.publication_date}
@@ -265,8 +272,9 @@ export default function Add({
               <Col>
                 <Button
                   type="submit"
-                  className="btn btn-success"
+                  variant="success"
                   disabled={isSubmitting}
+                  className="border-dark shadow"
                 >
                   Add Book
                 </Button>
@@ -274,7 +282,8 @@ export default function Add({
               <Col>
                 <Button
                   onClick={() => setAddShow(false)}
-                  className="btn btn-secondary"
+                  variant="secondary"
+                  className="border-dark shadow"
                 >
                   Close
                 </Button>

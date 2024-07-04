@@ -6,12 +6,13 @@ import AuthorDetails from "./AuthorDetails";
 import Spinner from "./Spinner";
 import DeleteAlert from "./DeleteAlert";
 import AddAuthor from "./AddAuthor";
+import EditAuthor from "./EditAuthor";
 
 export default function AllAuthors() {
   const [listOfAuthors, setListOfAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedauthor, setSelectedAuthor] = useState({});
-  const [authortoedit, editAuthor] = useState({});
+  //const [authortoedit, editAuthor] = useState({});
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -20,6 +21,8 @@ export default function AllAuthors() {
   const [deleteYes, setDeleteYes] = useState(false);
 
   const [addShow, setAddShow] = useState(false);
+
+  const [showEditAuthorModal, setShowEditAuthorModal] = useState(false);
 
   useEffect(() => {
     const fetchAuthorsData = async () => {
@@ -39,11 +42,28 @@ export default function AllAuthors() {
     fetchAuthorsData();
   }, []);
 
-  if (listOfAuthors.length > 0) {
-    if (loading) {
-      return <Spinner />;
+  //function to pass to child component to update author
+  const updateauthor = (updatedAuthor) => {
+    // Find the index of the task with the provided taskId
+    const authorIndex = listOfAuthors.findIndex(
+      (author) => author.author_id === updatedAuthor.author_id
+    );
+
+    // Make sure the task exists
+    if (authorIndex !== -1) {
+      // Create a copy of the author array
+      const updatedAuthorsList = [...listOfAuthors];
+
+      // Update the author with the new data
+      updatedAuthorsList[authorIndex] = {
+        ...updatedAuthorsList[authorIndex],
+        name: updatedAuthor.name,
+        biography: updatedAuthor.biography,
+      };
+
+      setListOfAuthors(updatedAuthorsList);
     }
-  }
+  };
 
   const showAuthorDetails = (author) => {
     console.log("inside showAuthorDetails function", author.author_id);
@@ -52,9 +72,10 @@ export default function AllAuthors() {
   };
 
   const editAuthorDetails = (author) => {
-    console.log("inside editAuthorDetails function", author.name);
-    editAuthor(author);
-    console.log("author to edit:", authortoedit);
+    console.log("inside editAuthorDetails authorId::", author.author_id);
+    setSelectedAuthor(author);
+    console.log("author to edit:", selectedauthor);
+    setShowEditAuthorModal(true); //open Edit Author Modal
   };
 
   const deleteAuthor = async (authorId) => {
@@ -87,6 +108,12 @@ export default function AllAuthors() {
   // const addAuthor = () => {
   //   setAddShow(true);
   // };
+
+  if (listOfAuthors.length > 0) {
+    if (loading) {
+      return <Spinner />;
+    }
+  }
 
   return (
     <div className="row">
@@ -143,7 +170,7 @@ export default function AllAuthors() {
                   <Button
                     variant="primary"
                     onClick={() => {
-                      editAuthorDetails(author.author_id);
+                      editAuthorDetails(author);
                     }}
                     className="me-2 shadow btn btn-primary border border-secondary"
                   >
@@ -163,6 +190,13 @@ export default function AllAuthors() {
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 selectedauthor={selectedauthor}
+              />
+
+              <EditAuthor
+                show={showEditAuthorModal}
+                onHide={() => setShowEditAuthorModal(false)}
+                selectedauthor={selectedauthor}
+                updateauthor={updateauthor}
               />
             </div>
           );

@@ -70,7 +70,7 @@ export default function AddAuthor({
           <Form
             noValidate
             onSubmit={handleSubmit}
-            className="mt-3 border border-secondary border-2 shadow"
+            className="mt-3 p-2 border border-secondary border-2 shadow bg-secondary bg-opacity-25"
           >
             <Row className="mb-3 mt-2">
               <Form.Group as={Col} controlId="validationFormik01" md="4">
@@ -91,6 +91,7 @@ export default function AddAuthor({
                       isInvalid={!!errors.name}
                       required
                       autoComplete="off"
+                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.name}
@@ -117,6 +118,7 @@ export default function AddAuthor({
                       isInvalid={!!errors.biography}
                       required
                       autoComplete="off"
+                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.biography}
@@ -131,7 +133,8 @@ export default function AddAuthor({
               <Col>
                 <Button
                   type="submit"
-                  className="btn btn-success"
+                  variant="success"
+                  className="border-dark shadow"
                   disabled={isSubmitting}
                 >
                   Add Author
@@ -139,8 +142,9 @@ export default function AddAuthor({
               </Col>
               <Col>
                 <Button
+                  variant="secondary"
                   onClick={() => setAddShow(false)}
-                  className="btn btn-secondary"
+                  className="border-dark shadow"
                 >
                   Close
                 </Button>
