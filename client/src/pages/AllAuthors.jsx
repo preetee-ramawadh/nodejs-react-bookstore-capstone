@@ -4,25 +4,33 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import AuthorDetails from "./AuthorDetails";
 import Spinner from "./Spinner";
-import DeleteAlert from "./DeleteAlert";
 import AddAuthor from "./AddAuthor";
 import EditAuthor from "./EditAuthor";
+import DeleteAlertAuthor from "./DeleteAlertAuthor";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import SortAuthorName from "./SortAuthorName";
 
 export default function AllAuthors() {
   const [listOfAuthors, setListOfAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedauthor, setSelectedAuthor] = useState({});
-  //const [authortoedit, editAuthor] = useState({});
+
+  const [authoridtodelete, setauthoridtodelete] = useState({});
 
   const [modalShow, setModalShow] = useState(false);
 
   const [alertShow, setAlertShow] = useState(false);
 
-  const [deleteYes, setDeleteYes] = useState(false);
-
   const [addShow, setAddShow] = useState(false);
 
   const [showEditAuthorModal, setShowEditAuthorModal] = useState(false);
+
+  const [sortAuthorByName, setsortAuthorByName] = useState([]);
+
+  const [sortAuthorByNameStatus, setSortAuthorByNameStatus] = useState(true);
+
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchAuthorsData = async () => {
@@ -34,6 +42,7 @@ export default function AllAuthors() {
         const jsonData = await response.json();
         console.log("jsonData", jsonData);
         setListOfAuthors(jsonData);
+        setsortAuthorByName(jsonData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching authors data:", error);
@@ -78,37 +87,6 @@ export default function AllAuthors() {
     setShowEditAuthorModal(true); //open Edit Author Modal
   };
 
-  const deleteAuthor = async (authorId) => {
-    console.log("inside deleteAuthor function");
-    setAlertShow(true);
-    if (deleteYes) {
-      setDeleteYes(false);
-      setAlertShow(false);
-      try {
-        const response = await fetch(
-          "http://localhost:5000/authors/" + authorId,
-          {
-            method: "DELETE",
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        // Update listOfBooks after deletion
-        setListOfAuthors(
-          listOfAuthors.filter((author) => author.author_id !== authorId)
-        );
-      } catch (error) {
-        console.error("There was a problem with the DELETE request:", error);
-      }
-    }
-  };
-
-  // const addAuthor = () => {
-  //   setAddShow(true);
-  // };
-
   if (listOfAuthors.length > 0) {
     if (loading) {
       return <Spinner />;
@@ -117,18 +95,20 @@ export default function AllAuthors() {
 
   return (
     <div className="row">
-      <DeleteAlert
+      <DeleteAlertAuthor
         alertShow={alertShow}
         setAlertShow={setAlertShow}
-        setDeleteYes={setDeleteYes}
+        listOfAuthors={listOfAuthors}
+        setListOfAuthors={setListOfAuthors}
+        authoridtodelete={authoridtodelete}
         value="Author"
       />
       <Button
-        variant="primary"
+        variant="outline-dark"
         onClick={() => setAddShow(true)}
-        className="shadow btn btn-success border border-secondary"
+        className="shadow border border-secondary fw-bold"
       >
-        ADD Author
+        ~~~~~~~~~~~~~ADD AUTHOR~~~~~~~~~~~~~
       </Button>
 
       <AddAuthor
@@ -138,69 +118,103 @@ export default function AllAuthors() {
         setListOfAuthors={setListOfAuthors}
       />
 
+      <Nav className="justify-content-end mt-3">
+        <Nav.Item style={{ width: "auto" }}>
+          <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
+            {" "}
+            <SortAuthorName
+              sortAuthorByName={sortAuthorByName}
+              setsortAuthorByName={setsortAuthorByName}
+              sortAuthorByNameStatus={sortAuthorByNameStatus}
+              setSortAuthorByNameStatus={setSortAuthorByNameStatus}
+            />
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item style={{ width: "50%" }}>
+          <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
+            <Form.Control
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              placeholder="Search an Author by Name"
+              aria-label="Search an Author by Name"
+            />
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+
       {listOfAuthors?.length > 0 ? (
-        listOfAuthors.map((author, key) => {
-          return (
-            <div key={key} className="d-flex col m-2">
-              <Card
-                style={{
-                  width: "18rem",
-                }}
-                className="shadow"
-              >
-                <Card.Img
-                  variant="top"
-                  src="/images/authors/david-godman.jpeg"
-                  alt="no image"
-                  style={{ maxHeight: "300px" }}
+        listOfAuthors
+          .filter((author) => {
+            return search.toLowerCase() === ""
+              ? author
+              : author.name.toLowerCase().includes(search);
+          })
+          .map((author, key) => {
+            return (
+              <div key={key} className="d-flex col m-2">
+                <Card
+                  style={{
+                    width: "18rem",
+                  }}
+                  className="shadow"
+                >
+                  <Card.Img
+                    variant="top"
+                    src="/images/authors/david-godman.jpeg"
+                    alt="no image"
+                    style={{ maxHeight: "300px" }}
+                  />
+                  <Card.Body className="text-center">
+                    <Card.Link
+                      id={author.author_id}
+                      href="#"
+                      onClick={() => {
+                        showAuthorDetails(author);
+                      }}
+                      className="text-info"
+                    >
+                      {author.name}
+                    </Card.Link>
+                  </Card.Body>
+                  <Card.Footer className="text-end">
+                    <Button
+                      variant="primary"
+                      onClick={() => {
+                        editAuthorDetails(author);
+                      }}
+                      className="me-2 shadow btn btn-primary border border-secondary"
+                    >
+                      EDIT
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => {
+                        setauthoridtodelete(author.author_id);
+                        setAlertShow(true);
+                      }}
+                      className="shadow btn btn-danger border border-secondary"
+                    >
+                      DELETE
+                    </Button>
+                  </Card.Footer>
+                </Card>
+
+                <AuthorDetails
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                  selectedauthor={selectedauthor}
                 />
-                <Card.Body className="text-center">
-                  <Card.Link
-                    id={author.author_id}
-                    href="#"
-                    onClick={() => {
-                      showAuthorDetails(author);
-                    }}
-                    className="text-info"
-                  >
-                    {author.name}
-                  </Card.Link>
-                </Card.Body>
-                <Card.Footer className="text-end">
-                  <Button
-                    variant="primary"
-                    onClick={() => {
-                      editAuthorDetails(author);
-                    }}
-                    className="me-2 shadow btn btn-primary border border-secondary"
-                  >
-                    EDIT
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() => deleteAuthor(author.author_id)}
-                    className="shadow btn btn-danger border border-secondary"
-                  >
-                    DELETE
-                  </Button>
-                </Card.Footer>
-              </Card>
 
-              <AuthorDetails
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                selectedauthor={selectedauthor}
-              />
-
-              <EditAuthor
-                show={showEditAuthorModal}
-                onHide={() => setShowEditAuthorModal(false)}
-                selectedauthor={selectedauthor}
-                updateauthor={updateauthor}
-              />
-            </div>
-          );
-        })
+                <EditAuthor
+                  show={showEditAuthorModal}
+                  onHide={() => setShowEditAuthorModal(false)}
+                  selectedauthor={selectedauthor}
+                  updateauthor={updateauthor}
+                />
+              </div>
+            );
+          })
       ) : (
         <h1>No Authors Present!!</h1>
       )}

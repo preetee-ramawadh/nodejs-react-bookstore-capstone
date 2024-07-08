@@ -4,9 +4,13 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import BookDetails from "./BookDetails";
-import DeleteAlert from "./DeleteAlert";
 import AddBook from "./AddBook";
 import EditBook from "./EditBook";
+import DeleteAlertBook from "./DeleteAlertBook";
+import SortBookTitle from "./SortBookTitle";
+import SortBookPrice from "./SortBookPrice";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
 
 export default function AllBooks() {
   const [listOfBooks, setListOfBooks] = useState([]);
@@ -17,11 +21,21 @@ export default function AllBooks() {
 
   const [alertShow, setAlertShow] = useState(false);
 
-  const [deleteYes, setDeleteYes] = useState(false);
+  const [booktodelete, setbooktodelete] = useState(false);
 
   const [addShow, setAddShow] = useState(false); //form to add a new book
 
   const [modalEditShow, setModalEditShow] = useState(false); //modal to edit book detail
+
+  const [sortBookByPrice, setsortBookByPrice] = useState([]);
+
+  const [sortBookByPriceStatus, setSortBookByPriceStatus] = useState(true);
+
+  const [sortBookByName, setsortBookByName] = useState([]);
+
+  const [sortBookByNameStatus, setSortBookByNameStatus] = useState(true);
+
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchBooksData();
@@ -36,6 +50,8 @@ export default function AllBooks() {
       const jsonData = await response.json();
       console.log("jsonData", jsonData);
       setListOfBooks(jsonData);
+      setsortBookByPrice(jsonData);
+      setsortBookByName(jsonData);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching books data:", error);
@@ -86,46 +102,26 @@ export default function AllBooks() {
     setModalEditShow(true);
   };
 
-  const deleteBook = async (bookId) => {
-    console.log("inside deleteBook function--deleteYes value:", deleteYes);
-    setAlertShow(true);
-
-    if (deleteYes) {
-      setDeleteYes(false);
-      setAlertShow(false);
-      try {
-        const response = await fetch("http://localhost:5000/books/" + bookId, {
-          method: "DELETE",
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        // Update listOfBooks after deletion
-        setListOfBooks(listOfBooks.filter((book) => book.book_id !== bookId));
-      } catch (error) {
-        console.error("There was a problem with the DELETE request:", error);
-      }
-    }
-  };
   const addBook = () => {
     setAddShow(true);
   };
 
   return (
     <div className="row">
-      <DeleteAlert
+      <DeleteAlertBook
+        className="row"
         alertShow={alertShow}
         setAlertShow={setAlertShow}
-        setDeleteYes={setDeleteYes}
-        value="Book"
+        listOfBooks={listOfBooks}
+        setListOfBooks={setListOfBooks}
+        booktodelete={booktodelete}
       />
       <Button
-        variant="primary"
+        variant="outline-dark"
         onClick={() => addBook()}
-        className="shadow btn btn-success border border-secondary"
+        className="shadow border border-secondary fw-bold"
       >
-        ADD BOOK
+        ~~~~~~~~~~~~~ADD BOOK~~~~~~~~~~~~~
       </Button>
 
       <AddBook
@@ -135,63 +131,108 @@ export default function AllBooks() {
         setListOfBooks={setListOfBooks}
       />
 
+      <Nav className="justify-content-end mt-3">
+        <Nav.Item style={{ width: "auto" }}>
+          <Nav.Link style={{ height: "auto" }}>
+            <SortBookPrice
+              sortBookByPrice={sortBookByPrice}
+              setsortBookByPrice={setsortBookByPrice}
+              sortBookByPriceStatus={sortBookByPriceStatus}
+              setSortBookByPriceStatus={setSortBookByPriceStatus}
+            />
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item style={{ width: "auto" }}>
+          <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
+            {" "}
+            <SortBookTitle
+              sortBookByName={sortBookByName}
+              setsortBookByName={setsortBookByName}
+              sortBookByNameStatus={sortBookByNameStatus}
+              setSortBookByNameStatus={setSortBookByNameStatus}
+            />
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item style={{ width: "50%" }}>
+          <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
+            <Form.Control
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              placeholder="Search a Book by Title"
+              aria-label="Search Book by title"
+            />
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+
       {listOfBooks?.length > 0 ? (
-        listOfBooks.map((book, key) => {
-          return (
-            <div key={key} className="d-flex col m-3">
-              <Card style={{ width: "18rem" }} className="shadow">
-                <Card.Img
-                  variant="top"
-                  src="/images/books/atomic-habbits.jpeg"
-                  alt="no image"
-                  style={{ maxHeight: "300px" }}
+        listOfBooks
+          .filter((book) => {
+            return search.toLowerCase() === ""
+              ? book
+              : book.title.toLowerCase().includes(search);
+          })
+          .map((book, key) => {
+            return (
+              <div key={key} className="d-flex col m-2">
+                <Card style={{ width: "18rem" }} className="shadow">
+                  <Card.Img
+                    variant="top"
+                    src="/images/books/atomic-habbits.jpeg"
+                    alt="no image"
+                    style={{ maxHeight: "300px" }}
+                  />
+                  <Card.Body className="text-center">
+                    <Card.Link
+                      id={book.book_id}
+                      href="#"
+                      onClick={() => {
+                        showBookDetails(book);
+                      }}
+                      className="text-primary"
+                    >
+                      {book.title}
+                    </Card.Link>
+                  </Card.Body>
+                  <Card.Footer className="text-end">
+                    <Button
+                      variant="primary"
+                      onClick={() => editBookDetails(book)}
+                      className="me-2 shadow btn btn-primary border border-secondary"
+                    >
+                      EDIT
+                    </Button>
+
+                    <Button
+                      variant="primary"
+                      //onClick={() => deleteBook(book.book_id)}
+                      onClick={() => {
+                        setbooktodelete(book.book_id);
+                        setAlertShow(true);
+                      }}
+                      className="shadow btn btn-danger border border-secondary"
+                    >
+                      DELETE
+                    </Button>
+                  </Card.Footer>
+                </Card>
+
+                <BookDetails
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                  selectedbook={selectedbook}
                 />
-                <Card.Body className="text-center">
-                  <Card.Link
-                    id={book.book_id}
-                    href="#"
-                    onClick={() => {
-                      showBookDetails(book);
-                    }}
-                    className="text-primary"
-                  >
-                    {book.title}
-                  </Card.Link>
-                </Card.Body>
-                <Card.Footer className="text-end">
-                  <Button
-                    variant="primary"
-                    onClick={() => editBookDetails(book)}
-                    className="me-2 shadow btn btn-primary border border-secondary"
-                  >
-                    EDIT
-                  </Button>
 
-                  <Button
-                    variant="primary"
-                    onClick={() => deleteBook(book.book_id)}
-                    className="shadow btn btn-danger border border-secondary"
-                  >
-                    DELETE
-                  </Button>
-                </Card.Footer>
-              </Card>
-
-              <BookDetails
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                selectedbook={selectedbook}
-              />
-
-              <EditBook
-                show={modalEditShow}
-                onHide={() => setModalEditShow(false)}
-                selectedbook={selectedbook}
-                updatebook={updatebook}
-              />
-            </div>
-          );
-        })
+                <EditBook
+                  show={modalEditShow}
+                  onHide={() => setModalEditShow(false)}
+                  selectedbook={selectedbook}
+                  updatebook={updatebook}
+                />
+              </div>
+            );
+          })
       ) : (
         <h1>No books available!!</h1>
       )}

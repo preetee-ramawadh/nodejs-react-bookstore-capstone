@@ -88,10 +88,10 @@ export default function EditBook(props) {
     fetchGenresData();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
     alert("inside handleSubmit");
     console.log("Submitted values:::");
-    //e.preventDefault();
+    event.preventDefault();
     console.log("Submitted values:", JSON.stringify(updatedBookData));
 
     try {

@@ -46,8 +46,6 @@ main {
 }
 .containerCustom {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
 }
 .navbar-nav {
   list-style: none;
@@ -153,6 +151,10 @@ main {
 
   .nav-link {
     justify-content: center;
+  }
+
+  main {
+    margin: 0;
   }
 }
 

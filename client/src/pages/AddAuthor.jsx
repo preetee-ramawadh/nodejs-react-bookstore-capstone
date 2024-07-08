@@ -1,3 +1,4 @@
+//import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -13,6 +14,12 @@ export default function AddAuthor({
   listOfAuthors,
   setListOfAuthors,
 }) {
+  // State to manage form data
+  /*const [formData, setFormData] = useState({
+    name: "",
+    biography: "",
+  });*/
+
   const { Formik } = formik;
 
   //initial value of data
@@ -26,6 +33,14 @@ export default function AddAuthor({
     name: yup.string().required(),
     biography: yup.string().required(),
   });
+
+  // Reset form function
+  /* const resetForm = () => {
+    setFormData({
+      name: "",
+      biography: "",
+    });
+  };*/
 
   const onSubmitAddAuthor = async (authorData, { resetForm }) => {
     console.log(authorData);
@@ -42,8 +57,10 @@ export default function AddAuthor({
       }
       //  add new book data to setlistOfBooks after adding new book
       setListOfAuthors([...listOfAuthors, authorData]);
-      // After submission, reset the form
+
+      // Reset the form after submission
       resetForm();
+      //setSubmitting(false);
     } catch (error) {
       console.error(
         "There was a problem with the new Author POST request:",
@@ -59,14 +76,7 @@ export default function AddAuthor({
         onSubmit={onSubmitAddAuthor}
         validationSchema={schema}
       >
-        {({
-          handleSubmit,
-          handleChange,
-          isSubmitting,
-          values,
-          touched,
-          errors,
-        }) => (
+        {({ handleSubmit, handleChange, isSubmitting, errors }) => (
           <Form
             noValidate
             onSubmit={handleSubmit}
@@ -86,6 +96,7 @@ export default function AddAuthor({
                     <Form.Control
                       type="text"
                       name="name"
+                      //value={formData.name}
                       aria-describedby="inputGroupPrependName"
                       onChange={handleChange}
                       isInvalid={!!errors.name}
@@ -111,8 +122,9 @@ export default function AddAuthor({
                     label="Enter Author's Biography"
                   >
                     <Form.Control
-                      type="text"
+                      as="textarea"
                       name="biography"
+                      //value={formData.biography}
                       aria-describedby="inputGroupPrependbio"
                       onChange={handleChange}
                       isInvalid={!!errors.biography}
