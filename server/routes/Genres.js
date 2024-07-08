@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Genres } = require("../models");
+const { Genres, Books } = require("../models");
 
 //GET: Retrieve a list of all Genres
 
@@ -17,7 +17,12 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const genreById = await Genres.findByPk(req.params.id);
+    const genreById = await Genres.findByPk(req.params.id, {
+      include: {
+        model: Books,
+        attributes: ["book_id", "title"], // Specify the attributes you want to retrieve from Books table
+      },
+    });
     if (genreById) {
       res.json(genreById);
     } else {
