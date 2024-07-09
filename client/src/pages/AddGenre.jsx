@@ -1,4 +1,3 @@
-//import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -8,30 +7,28 @@ import Asteric from "./Asteric";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-export default function AddAuthor({
+export default function AddGenre({
   addShow,
   setAddShow,
-  listOfAuthors,
-  setListOfAuthors,
+  listOfGenres,
+  setListOfGenres,
 }) {
   //initial value of data
   const initialValues = {
-    name: "",
-    biography: "",
+    genre_name: "",
   };
 
   //form validation done by yup library
   const schema = yup.object().shape({
-    name: yup.string().required(),
-    biography: yup.string().required(),
+    genre_name: yup.string().required(),
   });
 
-  const handleSubmit = async (authorData, { resetForm }) => {
-    console.log(authorData);
+  const handleSubmit = async (genreData, { resetForm }) => {
+    console.log(genreData);
     try {
-      const response = await fetch("http://localhost:5000/authors", {
+      const response = await fetch("http://localhost:5000/genres", {
         method: "POST",
-        body: JSON.stringify(authorData),
+        body: JSON.stringify(genreData),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -40,7 +37,7 @@ export default function AddAuthor({
         throw new Error("Network response was not ok");
       }
       //  add new book data to setlistOfBooks after adding new book
-      setListOfAuthors([...listOfAuthors, authorData]);
+      setListOfGenres([...listOfGenres, genreData]);
 
       // Reset the form after submission
       resetForm();
@@ -57,6 +54,7 @@ export default function AddAuthor({
     return (
       <Formik
         initialValues={initialValues}
+        // onSubmit={onSubmitAddAuthor}
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
@@ -67,6 +65,7 @@ export default function AddAuthor({
             className="mt-3 p-2 outline-secondary shadow bg-secondary"
           >
             <Row className="mb-3 mt-2">
+              <Col md="4"></Col>
               <Form.Group as={Col} controlId="validationFormik01" md="4">
                 <InputGroup hasValidation>
                   <InputGroup.Text id="inputGroupPrependName">
@@ -79,47 +78,21 @@ export default function AddAuthor({
                   >
                     <Form.Control
                       type="text"
-                      name="name"
-                      value={values.name}
+                      name="genre_name"
+                      value={values.genre_name}
                       aria-describedby="inputGroupPrependName"
                       onChange={handleChange}
-                      isInvalid={!!errors.name}
+                      isInvalid={!!errors.genre_name}
                       required
                       autoComplete="off"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
-                      {errors.name}
+                      {errors.genre_name}
                     </Form.Control.Feedback>
                   </Form.FloatingLabel>
                 </InputGroup>
               </Form.Group>
-
-              <Form.Group as={Col} controlId="validationFormik01" md="8">
-                <InputGroup hasValidation>
-                  <InputGroup.Text id="inputGroupPrependBio">
-                    <Asteric />
-                  </InputGroup.Text>
-
-                  <Form.FloatingLabel
-                    controlId="floatingBio"
-                    label="Enter Author's Biography"
-                  >
-                    <Form.Control
-                      as="textarea"
-                      name="biography"
-                      value={values.biography}
-                      aria-describedby="inputGroupPrependbio"
-                      onChange={handleChange}
-                      isInvalid={!!errors.biography}
-                      required
-                      autoComplete="off"
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {errors.biography}
-                    </Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                </InputGroup>
-              </Form.Group>
+              <Col md="4"></Col>
             </Row>
 
             <Row className="mt-3 mb-2">
@@ -131,7 +104,7 @@ export default function AddAuthor({
                   className="border-light shadow rounded-pill"
                   disabled={isSubmitting}
                 >
-                  Add Author
+                  Add Genre
                 </Button>
               </Col>
               <Col>

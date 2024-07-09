@@ -33,9 +33,10 @@ body::-webkit-scrollbar-thumb {
 
 main {
   margin-left: 5rem;
-  margin-right: 5rem;
   padding: 1rem;
-  flex-wrap: wrap;
+  /* margin-right: 5rem; */
+  /* flex-wrap: wrap; */
+  background-color: var(--bg-primary);
 }
 
 .navbar {
@@ -44,9 +45,7 @@ main {
   transition: width 600ms ease;
   overflow: scroll;
 }
-.containerCustom {
-  display: flex;
-}
+
 .navbar-nav {
   list-style: none;
   padding: 0;
@@ -90,6 +89,11 @@ main {
   width: 2rem;
   min-width: 2rem;
   margin: 0 1.5rem;
+}
+
+.containerCustom {
+  display: flex;
+  overflow-y: scroll;
 }
 
 .fa-primary {
@@ -219,3 +223,32 @@ main {
 .solar #solarIcon {
   display: block;
 }
+
+/*card styling*/
+a:hover {
+  background-color: #141418;
+  color: #df49a6 !important;
+}
+
+/* .form-control:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+} */
+
+.card {
+  width: 18rem;
+  transition: transform 200ms ease-in;
+  box-shadow: 5px 5px 5px hsla(0, 38%, 94%, 0.2);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+  /* &:hover &__btn {
+    background: red;
+    color: white;
+  } */
+}
+
+/* form {
+  background-color: #ffffff1a;
+} */

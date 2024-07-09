@@ -11,6 +11,7 @@ import SortBookTitle from "./SortBookTitle";
 import SortBookPrice from "./SortBookPrice";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
+import EditIcon from "./EditIcon";
 
 export default function AllBooks() {
   const [listOfBooks, setListOfBooks] = useState([]);
@@ -36,6 +37,8 @@ export default function AllBooks() {
   const [sortBookByNameStatus, setSortBookByNameStatus] = useState(true);
 
   const [search, setSearch] = useState("");
+
+  const [searchByAuthor, setSearchByAuthor] = useState("");
 
   useEffect(() => {
     fetchBooksData();
@@ -109,7 +112,6 @@ export default function AllBooks() {
   return (
     <div className="row">
       <DeleteAlertBook
-        className="row"
         alertShow={alertShow}
         setAlertShow={setAlertShow}
         listOfBooks={listOfBooks}
@@ -117,11 +119,12 @@ export default function AllBooks() {
         booktodelete={booktodelete}
       />
       <Button
-        variant="outline-dark"
+        variant="outline-secondary border-2"
         onClick={() => addBook()}
-        className="shadow border border-secondary fw-bold"
+        className="border border-dark-subtle shadow fw-bold ms-1"
+        style={{ width: "99%" }}
       >
-        ~~~~~~~~~~~~~ADD BOOK~~~~~~~~~~~~~
+        ~~~~~~~~~~~~~ADD A BOOK~~~~~~~~~~~~~
       </Button>
 
       <AddBook
@@ -164,6 +167,18 @@ export default function AllBooks() {
             />
           </Nav.Link>
         </Nav.Item>
+
+        {/* <Nav.Item style={{ width: "25%" }}>
+          <Nav.Link eventKey="link-3" style={{ height: "auto" }}>
+            <Form.Control
+              onChange={(e) => {
+                setSearchByAuthor(e.target.value);
+              }}
+              placeholder="Search Books by Author"
+              aria-label="Search Book by Author"
+            />
+          </Nav.Link>
+        </Nav.Item> */}
       </Nav>
 
       {listOfBooks?.length > 0 ? (
@@ -176,44 +191,48 @@ export default function AllBooks() {
           .map((book, key) => {
             return (
               <div key={key} className="d-flex col m-2">
-                <Card style={{ width: "18rem" }} className="shadow">
+                <Card
+                  style={{ borderRadius: "0 0 4em 0" }}
+                  className="border shadow overflow-hidden"
+                >
                   <Card.Img
                     variant="top"
                     src="/images/books/atomic-habbits.jpeg"
                     alt="no image"
                     style={{ maxHeight: "300px" }}
                   />
-                  <Card.Body className="text-center">
+                  <Card.Body className="text-center bg-dark">
                     <Card.Link
                       id={book.book_id}
                       href="#"
                       onClick={() => {
                         showBookDetails(book);
                       }}
-                      className="text-primary"
+                      className="text-light text-capitalize text-decoration-none fs-4"
                     >
                       {book.title}
                     </Card.Link>
                   </Card.Body>
-                  <Card.Footer className="text-end">
+                  <Card.Footer className="border-0 text-center bg-dark">
                     <Button
-                      variant="primary"
+                      variant="outline-primary"
                       onClick={() => editBookDetails(book)}
-                      className="me-2 shadow btn btn-primary border border-secondary"
+                      className="me-3 mb-1 shadow border rounded-pill"
                     >
-                      EDIT
+                      <EditIcon />
                     </Button>
 
                     <Button
-                      variant="primary"
+                      variant="outline-danger"
                       //onClick={() => deleteBook(book.book_id)}
                       onClick={() => {
                         setbooktodelete(book.book_id);
                         setAlertShow(true);
                       }}
-                      className="shadow btn btn-danger border border-secondary"
+                      className="rounded-circle border fw-bold"
                     >
-                      DELETE
+                      {" "}
+                      X
                     </Button>
                   </Card.Footer>
                 </Card>

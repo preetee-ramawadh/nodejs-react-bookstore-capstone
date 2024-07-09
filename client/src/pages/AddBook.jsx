@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import Asteric from "./Asteric";
-import * as formik from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
@@ -15,7 +15,7 @@ export default function AddBook({
   listOfBooks,
   setListOfBooks,
 }) {
-  const { Formik } = formik;
+  //const { Formik } = formik;
   const [loading, setLoading] = useState(true);
 
   const [mappedAuthors, setMappedAuthors] = useState([]);
@@ -85,7 +85,7 @@ export default function AddBook({
     fetchGenresData();
   }, []);
 
-  const onSubmitAddBook = async (bookData, { resetForm }) => {
+  const handleSubmit = async (bookData, { resetForm }) => {
     console.log(bookData);
     try {
       const response = await fetch("http://localhost:5000/books", {
@@ -120,14 +120,14 @@ export default function AddBook({
     return (
       <Formik
         initialValues={initialValues}
-        onSubmit={onSubmitAddBook}
+        onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        {({ handleSubmit, handleChange, isSubmitting, errors }) => (
+        {({ handleSubmit, handleChange, isSubmitting, values, errors }) => (
           <Form
             noValidate
             onSubmit={handleSubmit}
-            className="mt-3 border border-secondary border-2 shadow bg-secondary bg-opacity-25"
+            className="mt-3 border border-secondary border-2 shadow bg-secondary"
           >
             <Row className="mb-3 mt-2">
               <Form.Group as={Col} controlId="validationFormik01" md="6">
@@ -143,12 +143,12 @@ export default function AddBook({
                     <Form.Control
                       type="text"
                       name="title"
+                      value={values.title}
                       aria-describedby="inputGroupPrependTitle"
                       onChange={handleChange}
                       isInvalid={!!errors.title}
                       required
                       autoComplete="off"
-                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.title}
@@ -165,9 +165,9 @@ export default function AddBook({
                 >
                   <Form.Select
                     name="author_id"
+                    value={values.author_id}
                     onChange={handleChange}
                     isInvalid={!!errors.author_id}
-                    className="shadow"
                   >
                     <option value="">Select an Author</option>
                     {mappedAuthors?.map((author) => {
@@ -192,9 +192,9 @@ export default function AddBook({
                 >
                   <Form.Select
                     name="genre_id"
+                    value={values.genre_id}
                     onChange={handleChange}
                     isInvalid={!!errors.genre_id}
-                    className="shadow"
                   >
                     <option value="">Select a Genre</option>
                     {mappedGenres?.map((genre) => {
@@ -226,12 +226,12 @@ export default function AddBook({
                     <Form.Control
                       type="text"
                       name="price"
+                      value={values.price}
                       aria-describedby="inputGroupPrependPrice"
                       onChange={handleChange}
                       isInvalid={!!errors.price}
                       required
                       autoComplete="off"
-                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.price}
@@ -253,12 +253,12 @@ export default function AddBook({
                     <Form.Control
                       type="text"
                       name="publication_date"
+                      value={values.publication_date}
                       aria-describedby="inputGroupPrepend"
                       onChange={handleChange}
                       isInvalid={!!errors.publication_date}
                       required
                       autoComplete="off"
-                      className="shadow"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {errors.publication_date}
@@ -274,7 +274,7 @@ export default function AddBook({
                   type="submit"
                   variant="success"
                   disabled={isSubmitting}
-                  className="border-dark shadow"
+                  className="border shadow rounded-pill"
                 >
                   Add Book
                 </Button>
@@ -282,8 +282,8 @@ export default function AddBook({
               <Col>
                 <Button
                   onClick={() => setAddShow(false)}
-                  variant="secondary"
-                  className="border-dark shadow"
+                  variant="dark"
+                  className="border shadow rounded-pill"
                 >
                   Close
                 </Button>

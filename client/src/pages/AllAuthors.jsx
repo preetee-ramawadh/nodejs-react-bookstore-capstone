@@ -10,6 +10,7 @@ import DeleteAlertAuthor from "./DeleteAlertAuthor";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import SortAuthorName from "./SortAuthorName";
+import EditIcon from "./EditIcon";
 
 export default function AllAuthors() {
   const [listOfAuthors, setListOfAuthors] = useState([]);
@@ -53,7 +54,7 @@ export default function AllAuthors() {
 
   //function to pass to child component to update author
   const updateauthor = (updatedAuthor) => {
-    // Find the index of the task with the provided taskId
+    // Find the index of the author with the provided authorId
     const authorIndex = listOfAuthors.findIndex(
       (author) => author.author_id === updatedAuthor.author_id
     );
@@ -104,11 +105,12 @@ export default function AllAuthors() {
         value="Author"
       />
       <Button
-        variant="outline-dark"
+        variant="outline-secondary"
         onClick={() => setAddShow(true)}
-        className="shadow border border-secondary fw-bold"
+        className="shadow border border-secondary fw-bold ms-1"
+        style={{ width: "99%" }}
       >
-        ~~~~~~~~~~~~~ADD AUTHOR~~~~~~~~~~~~~
+        ~~~~~~~~~~~~~ADD AN AUTHOR~~~~~~~~~~~~~
       </Button>
 
       <AddAuthor
@@ -153,49 +155,45 @@ export default function AllAuthors() {
           .map((author, key) => {
             return (
               <div key={key} className="d-flex col m-2">
-                <Card
-                  style={{
-                    width: "18rem",
-                  }}
-                  className="shadow"
-                >
+                <Card className="border shadow rounded-pill text-center overflow-hidden">
                   <Card.Img
                     variant="top"
                     src="/images/authors/david-godman.jpeg"
                     alt="no image"
-                    style={{ maxHeight: "300px" }}
                   />
-                  <Card.Body className="text-center">
+
+                  <Card.Body className="bg-dark">
                     <Card.Link
                       id={author.author_id}
                       href="#"
                       onClick={() => {
                         showAuthorDetails(author);
                       }}
-                      className="text-info"
+                      className="text-light text-capitalize text-center text-decoration-none fs-4"
                     >
                       {author.name}
                     </Card.Link>
                   </Card.Body>
-                  <Card.Footer className="text-end">
+                  <Card.Footer className="border-0 bg-dark text-center">
                     <Button
-                      variant="primary"
+                      variant="outline-primary"
                       onClick={() => {
                         editAuthorDetails(author);
                       }}
-                      className="me-2 shadow btn btn-primary border border-secondary"
+                      className="me-3 mb-1 shadow border rounded-pill"
                     >
-                      EDIT
+                      <EditIcon />
                     </Button>
                     <Button
-                      variant="primary"
+                      variant="outline-danger"
                       onClick={() => {
                         setauthoridtodelete(author.author_id);
                         setAlertShow(true);
                       }}
-                      className="shadow btn btn-danger border border-secondary"
+                      className="rounded-circle border fw-bold mb-1"
                     >
-                      DELETE
+                      {" "}
+                      X
                     </Button>
                   </Card.Footer>
                 </Card>

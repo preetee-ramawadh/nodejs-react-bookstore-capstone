@@ -8,7 +8,7 @@ import SidePanel from "./pages/SidePanel";
 
 function App() {
   return (
-    <div className="containerCustom" style={{ backgroundColor: "#ffffff" }}>
+    <div className="containerCustom">
       <SidePanel />
       <main className="container">
         <Router>
