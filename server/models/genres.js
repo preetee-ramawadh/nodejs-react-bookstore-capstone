@@ -2,13 +2,17 @@ module.exports = (sequelize, DataTypes) => {
   const Genres = sequelize.define("Genres", {
     genre_id: {
       type: DataTypes.INTEGER,
-      //defaultValue: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
     genre_name: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image_url: {
+      type: DataTypes.TEXT,
+      defaultValue: "/images/genres/genreimageunavailable.jpg",
       allowNull: false,
     },
   });

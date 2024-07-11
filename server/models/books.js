@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const Books = sequelize.define("Books", {
     book_id: {
       // type: DataTypes.UUID,
-      // defaultValue: DataTypes.INTEGER,
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -34,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     publication_date: {
       type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    image_url: {
+      type: DataTypes.TEXT,
+      defaultValue: "/images/books/imageunavailable.jpg",
       allowNull: false,
     },
   });

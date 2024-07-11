@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
   const Authors = sequelize.define("Authors", {
     author_id: {
       type: DataTypes.INTEGER,
-      //defaultValue: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
@@ -15,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     biography: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    image_url: {
+      type: DataTypes.TEXT,
+      defaultValue: "/images/authors/imagesunavailable.jpg",
       allowNull: false,
     },
   });
