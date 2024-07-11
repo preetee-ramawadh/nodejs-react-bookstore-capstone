@@ -5,6 +5,7 @@ import AllBooks from "./pages/AllBooks";
 import AllAuthors from "./pages/AllAuthors";
 import AllGenres from "./pages/AllGenres";
 import SidePanel from "./pages/SidePanel";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
             <Route path="/books" element={<AllBooks />} />
             <Route path="/authors" element={<AllAuthors />} />
             <Route path="/genres" element={<AllGenres />} />
+            <Route path="/404" element={<NotFound />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </Router>
       </main>

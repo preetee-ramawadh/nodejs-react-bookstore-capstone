@@ -33,6 +33,8 @@ export default function AllAuthors() {
 
   const [search, setSearch] = useState("");
 
+  const [imgURlArray, setImgURLArray] = useState([]);
+
   useEffect(() => {
     const fetchAuthorsData = async () => {
       try {
@@ -44,6 +46,19 @@ export default function AllAuthors() {
         console.log("jsonData", jsonData);
         setListOfAuthors(jsonData);
         setsortAuthorByName(jsonData);
+
+        /**populate images from genres table in an imgURL array */
+
+        // Extract or transform data from the dataset
+        const imgURL = jsonData.map((a) => ({
+          id: a.author_id,
+          imageUrl: a.image_url,
+        }));
+
+        // Update the state with the constructed array
+        setImgURLArray(imgURL);
+        console.log("Authors imgURlArray:", imgURlArray);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching authors data:", error);
@@ -153,12 +168,18 @@ export default function AllAuthors() {
               : author.name.toLowerCase().includes(search);
           })
           .map((author, key) => {
+            const imgUrl =
+              imgURlArray[key]?.imageUrl ||
+              "/images/authors/imagesunavailable.jpg";
+
             return (
               <div key={key} className="d-flex col m-2">
                 <Card className="border shadow rounded-pill text-center overflow-hidden">
                   <Card.Img
                     variant="top"
-                    src="/images/authors/david-godman.jpeg"
+                    //src="/images/authors/imagesunavailable.jpg"
+                    //src={author.image_url}
+                    src={imgUrl}
                     alt="no image"
                   />
 

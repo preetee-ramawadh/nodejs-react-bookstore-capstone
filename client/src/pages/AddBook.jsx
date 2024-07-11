@@ -251,13 +251,14 @@ export default function AddBook({
                     label="Enter Published On Date"
                   >
                     <Form.Control
-                      type="text"
+                      type="date"
                       name="publication_date"
                       value={values.publication_date}
                       aria-describedby="inputGroupPrepend"
                       onChange={handleChange}
                       isInvalid={!!errors.publication_date}
                       required
+                      max={new Date()?.toISOString()?.slice(0, 10)}
                       autoComplete="off"
                     />
                     <Form.Control.Feedback type="invalid" tooltip>

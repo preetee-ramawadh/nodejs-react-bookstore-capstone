@@ -38,7 +38,9 @@ export default function AllBooks() {
 
   const [search, setSearch] = useState("");
 
-  const [searchByAuthor, setSearchByAuthor] = useState("");
+  const [imgURlArray, setImgURLArray] = useState([]);
+
+  //const [searchByAuthor, setSearchByAuthor] = useState("");
 
   useEffect(() => {
     fetchBooksData();
@@ -55,6 +57,19 @@ export default function AllBooks() {
       setListOfBooks(jsonData);
       setsortBookByPrice(jsonData);
       setsortBookByName(jsonData);
+
+      /**populate images from genres table in an imgURL array */
+
+      // Extract or transform data from the dataset
+      const imgURL = jsonData.map((b) => ({
+        id: b.book_id,
+        imageUrl: b.image_url,
+      }));
+
+      // Update the state with the constructed array
+      setImgURLArray(imgURL);
+      console.log("books imgURlArray:", imgURlArray);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching books data:", error);
@@ -189,6 +204,9 @@ export default function AllBooks() {
               : book.title.toLowerCase().includes(search);
           })
           .map((book, key) => {
+            const imgUrl =
+              imgURlArray[key]?.imageUrl ||
+              "/images/books/imageunavailable.jpg";
             return (
               <div key={key} className="d-flex col m-2">
                 <Card
@@ -197,7 +215,7 @@ export default function AllBooks() {
                 >
                   <Card.Img
                     variant="top"
-                    src="/images/books/atomic-habbits.jpeg"
+                    src={imgUrl}
                     alt="no image"
                     style={{ maxHeight: "300px" }}
                   />

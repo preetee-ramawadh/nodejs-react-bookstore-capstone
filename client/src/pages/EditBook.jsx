@@ -1,15 +1,11 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import * as formik from "formik";
-import * as yup from "yup";
-import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 
 export default function EditBook(props) {
-  const { Formik } = formik;
-
   const [loading, setLoading] = useState(true);
 
   const [mappedAuthors, setMappedAuthors] = useState([]);
@@ -17,6 +13,7 @@ export default function EditBook(props) {
   const [mappedGenres, setMappedGenres] = useState([]);
 
   const [updatedBookData, setUpdatedBookData] = useState({});
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setUpdatedBookData(props.selectedbook);
@@ -24,24 +21,7 @@ export default function EditBook(props) {
 
   console.log("updatedBookData", updatedBookData);
 
-  //initial value of data
-  const initialValues = {
-    title: props.selectedbook.title,
-    author_id: props.selectedbook.Author?.name,
-    genre_id: props.selectedbook.Genre?.genre_name,
-    price: props.selectedbook.price,
-    publication_date: props.selectedbook.publication_date,
-  };
-  //console.log("initialValues::", initialValues);
-
-  //form validation done by yup library
-  const schema = yup.object().shape({
-    title: yup.string().required(),
-    author_id: yup.string().required("Please select an author"),
-    genre_id: yup.string().required("Please select a genre"),
-    price: yup.number().required(),
-    publication_date: yup.date().required(),
-  });
+  /** Fetching authors list for populating authors dropdown */
 
   useEffect(() => {
     const fetchAuthorsData = async () => {
@@ -64,6 +44,8 @@ export default function EditBook(props) {
     };
     fetchAuthorsData();
   }, []);
+
+  /** Fetching genres list for populating genres dropdown */
 
   useEffect(() => {
     const fetchGenresData = async () => {
@@ -88,35 +70,71 @@ export default function EditBook(props) {
     fetchGenresData();
   }, []);
 
-  const handleSubmit = async (event) => {
-    alert("inside handleSubmit");
+  /** Function to validate updated Book */
+
+  const validateUpdatedBook = (data) => {
+    const errors = {};
+    // regular expression for a number with up to two decimal places
+    const numberWithTwoDecimalsRegex = /^\d+(\.\d{1,2})?$/;
+
+    if (!data.title.trim()) {
+      errors.title = "Book name is required";
+    }
+    if (!data.price) {
+      errors.price = "Price is required";
+    }
+    if (!numberWithTwoDecimalsRegex.test(data.price)) {
+      errors.price = "Price should be a number with up to two decimal places";
+    }
+    if (!data.publication_date.trim()) {
+      errors.publication_date = "publication date is required";
+    }
+
+    return errors;
+  };
+
+  /** Function to Edit Book Details */
+
+  const handleSave = async (e) => {
+    //alert("inside handleSubmit");
     console.log("Submitted values:::");
-    event.preventDefault();
+    e.preventDefault();
+
+    const newErrors = validateUpdatedBook(updatedBookData);
+    setErrors(newErrors);
+
     console.log("Submitted values:", JSON.stringify(updatedBookData));
 
-    try {
-      const response = await fetch(
-        `http://localhost:5000/books/${props.selectedbook.book_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-          body: JSON.stringify(updatedBookData),
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/books/${props.selectedbook.book_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+            body: JSON.stringify(updatedBookData),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+        //update state
+        props.updatebook(updatedBookData);
+
+        console.log("Form submitted successfully!");
+
+        props.onHide(); // Close the modal after submission
+      } catch (error) {
+        console.error(
+          "There was a problem with the Book edit (PUT) request:",
+          error
+        );
       }
-      //update state
-      props.updatebook(updatedBookData);
-      //actions.setSubmitting(false);
-      props.onHide(); // Close the modal after submission
-    } catch (error) {
-      console.error(
-        "There was a problem with the new book POST request:",
-        error
-      );
+    } else {
+      console.log(`Form submission failed
+       due to validation errors.`);
     }
   };
 
@@ -125,202 +143,186 @@ export default function EditBook(props) {
   }
 
   return (
-    <Formik
-      enableReinitialize={true}
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={schema}
+    <Modal
+      {...props}
+      size="md"
+      aria-labelledby="contained-modal-title-vcenter"
+      backdrop="static"
+      keyboard={false}
+      centered
+      className="bg-secondary bg-opacity-10"
     >
-      {(formikProps) => (
-        <Modal
-          {...props}
-          size="md"
-          aria-labelledby="contained-modal-title-vcenter"
-          backdrop="static"
-          keyboard={false}
-          centered
-          className="bg-secondary bg-opacity-10"
+      <Modal.Header closeButton className="bg-info">
+        <Modal.Title id="contained-modal-title-vcenter">
+          Edit Book Details
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="bg-secondary bg-opacity-25">
+        <Form
+          noValidate
+          onSubmit={handleSave}
+          className="m-1 p-1 shadow bg-secondary bg-opacity-50"
         >
-          <Modal.Header closeButton className="bg-info">
-            <Modal.Title id="contained-modal-title-vcenter">
-              Edit Book Details
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="bg-secondary bg-opacity-25">
-            <Form
-              noValidate
-              onSubmit={formikProps.handleSubmit}
-              className="m-1 p-1 shadow bg-secondary bg-opacity-50"
-            >
-              <Row className="m-2">
-                <Form.Group as={Col} controlId="validationFormik01">
-                  <Form.FloatingLabel
-                    controlId="floatingTitle"
-                    label="Book Title"
-                  >
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      aria-describedby="inputGroupPrependTitle"
-                      //value={formikProps.values.title}
-                      value={updatedBookData.title}
-                      onChange={(e) =>
-                        setUpdatedBookData({
-                          ...updatedBookData,
-                          title: e.target.value,
-                        })
-                      }
-                      //isInvalid={!!formikProps.errors.title}
-                      isInvalid={
-                        formikProps.touched.title && !!formikProps.errors.title
-                      }
-                      required
-                      autoComplete="off"
-                      className="shadow"
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {formikProps.errors.title}
-                    </Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                </Form.Group>
-              </Row>
-              <Row className="m-2">
-                <Form.Group as={Col} controlId="validationFormik02">
-                  <Form.FloatingLabel controlId="floatingAuthor" label="Author">
-                    <Form.Select
-                      name="author_id"
-                      value={updatedBookData.author_id}
-                      onChange={(e) =>
-                        setUpdatedBookData({
-                          ...updatedBookData,
-                          author_id: e.target.value,
-                        })
-                      }
-                      isInvalid={
-                        formikProps.touched.author_id &&
-                        !!formikProps.errors.author_id
-                      }
-                      className="shadow"
-                    >
-                      {mappedAuthors?.map((author) => {
-                        return (
-                          <option key={author.id} value={author.id}>
-                            {author.name}
-                          </option>
-                        );
-                      })}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {formikProps.errors.author_id}
-                    </Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                </Form.Group>
+          <Row className="m-2">
+            <Form.Group as={Col} controlId="validationFormik01">
+              <Form.FloatingLabel controlId="floatingTitle" label="Book Title">
+                <Form.Control
+                  type="text"
+                  name="title"
+                  aria-describedby="inputGroupPrependTitle"
+                  // value={formikProps.values.title}
+                  // onChange={formikProps.handleChange}
+                  // isInvalid={
+                  //   formikProps.touched.title && !!formikProps.errors.title
+                  // }
+                  value={updatedBookData.title}
+                  onChange={(e) =>
+                    setUpdatedBookData({
+                      ...updatedBookData,
+                      title: e.target.value,
+                    })
+                  }
+                  isInvalid={!!errors.title}
+                  required
+                  autoComplete="off"
+                  className="shadow"
+                />
+                <Form.Control.Feedback type="invalid" tooltip>
+                  {/* {formikProps.errors.title} */}
+                  {errors.title}
+                </Form.Control.Feedback>
+              </Form.FloatingLabel>
+            </Form.Group>
+          </Row>
+          <Row className="m-2">
+            <Form.Group as={Col} controlId="validationFormik02">
+              <Form.FloatingLabel controlId="floatingAuthor" label="Author">
+                <Form.Select
+                  name="author_id"
+                  value={updatedBookData.author_id}
+                  onChange={(e) =>
+                    setUpdatedBookData({
+                      ...updatedBookData,
+                      author_id: e.target.value,
+                    })
+                  }
+                  isInvalid={!!errors.author_id}
+                  className="shadow"
+                >
+                  {mappedAuthors?.map((author) => {
+                    return (
+                      <option key={author.id} value={author.id}>
+                        {author.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid" tooltip>
+                  {errors.author_id}
+                </Form.Control.Feedback>
+              </Form.FloatingLabel>
+            </Form.Group>
 
-                <Form.Group as={Col} controlId="validationFormik03">
-                  <Form.FloatingLabel controlId="floatingGenre" label="Genre">
-                    <Form.Select
-                      name="genre_id"
-                      value={updatedBookData.genre_id}
-                      onChange={(e) =>
-                        setUpdatedBookData({
-                          ...updatedBookData,
-                          genre_id: e.target.value,
-                        })
-                      }
-                      isInvalid={
-                        formikProps.touched.genre_id &&
-                        !!formikProps.errors.genre_id
-                      }
-                      className="shadow"
-                    >
-                      {mappedGenres?.map((genre) => {
-                        return (
-                          <option key={genre.id} value={genre.id}>
-                            {genre.name}
-                          </option>
-                        );
-                      })}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {formikProps.errors.genre_id}
-                    </Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                </Form.Group>
-              </Row>
-              <Row className="m-2">
-                <Form.Group as={Col} controlId="validationFormik04" md="6">
-                  <Form.FloatingLabel controlId="floatingPrice" label="Price">
-                    <Form.Control
-                      type="text"
-                      name="price"
-                      aria-describedby="inputGroupPrependPrice"
-                      value={updatedBookData.price}
-                      onChange={(e) =>
-                        setUpdatedBookData({
-                          ...updatedBookData,
-                          price: e.target.value,
-                        })
-                      }
-                      isInvalid={
-                        formikProps.touched.price && !!formikProps.errors.price
-                      }
-                      required
-                      autoComplete="off"
-                      className="shadow"
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {formikProps.errors.price}
-                    </Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                </Form.Group>
+            <Form.Group as={Col} controlId="validationFormik03">
+              <Form.FloatingLabel controlId="floatingGenre" label="Genre">
+                <Form.Select
+                  name="genre_id"
+                  value={updatedBookData.genre_id}
+                  onChange={(e) =>
+                    setUpdatedBookData({
+                      ...updatedBookData,
+                      genre_id: e.target.value,
+                    })
+                  }
+                  isInvalid={!!errors.genre_id}
+                  className="shadow"
+                >
+                  {mappedGenres?.map((genre) => {
+                    return (
+                      <option key={genre.id} value={genre.id}>
+                        {genre.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid" tooltip>
+                  {errors.genre_id}
+                </Form.Control.Feedback>
+              </Form.FloatingLabel>
+            </Form.Group>
+          </Row>
+          <Row className="m-2">
+            <Form.Group as={Col} controlId="validationFormik04" md="6">
+              <Form.FloatingLabel controlId="floatingPrice" label="Price">
+                <Form.Control
+                  type="text"
+                  name="price"
+                  aria-describedby="inputGroupPrependPrice"
+                  value={updatedBookData.price}
+                  onChange={(e) =>
+                    setUpdatedBookData({
+                      ...updatedBookData,
+                      price: e.target.value,
+                    })
+                  }
+                  isInvalid={!!errors.price}
+                  required
+                  autoComplete="off"
+                  className="shadow"
+                />
+                <Form.Control.Feedback type="invalid" tooltip>
+                  {errors.price}
+                </Form.Control.Feedback>
+              </Form.FloatingLabel>
+            </Form.Group>
 
-                <Form.Group as={Col} controlId="validationFormik05" md="6">
-                  <Form.FloatingLabel
-                    controlId="floatingPublished"
-                    label="Enter Published On Date"
-                  >
-                    <Form.Control
-                      type="text"
-                      name="publication_date"
-                      aria-describedby="inputGroupPrepend"
-                      value={updatedBookData.publication_date}
-                      onChange={(e) =>
-                        setUpdatedBookData({
-                          ...updatedBookData,
-                          publication_date: e.target.value,
-                        })
-                      }
-                      isInvalid={
-                        formikProps.touched.publication_date &&
-                        !!formikProps.errors.publication_date
-                      }
-                      required
-                      autoComplete="off"
-                      className="shadow"
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {formikProps.errors.publication_date}
-                    </Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                </Form.Group>
-              </Row>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer className="bg-info">
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={formikProps.handleSubmit}
-              disabled={formikProps.isSubmitting}
-            >
-              Save Changes
-            </Button>
-            <Button variant="secondary" onClick={props.onHide}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
-    </Formik>
+            <Form.Group as={Col} controlId="validationFormik05" md="6">
+              <Form.FloatingLabel
+                controlId="floatingPublished"
+                label="Enter Published On Date"
+              >
+                <Form.Control
+                  type="date"
+                  name="publication_date"
+                  aria-describedby="inputGroupPrepend"
+                  value={updatedBookData.publication_date}
+                  onChange={(e) =>
+                    setUpdatedBookData({
+                      ...updatedBookData,
+                      publication_date: e.target.value,
+                    })
+                  }
+                  isInvalid={!!errors.publication_date}
+                  required
+                  max={new Date()?.toISOString()?.slice(0, 10)}
+                  autoComplete="off"
+                  className="shadow"
+                />
+                <Form.Control.Feedback type="invalid" tooltip>
+                  {errors.publication_date}
+                </Form.Control.Feedback>
+              </Form.FloatingLabel>
+            </Form.Group>
+          </Row>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer className="bg-info">
+        <Button
+          variant="outline-success"
+          type="submit"
+          onClick={handleSave}
+          className="border shadow rounded-pill"
+        >
+          Save Changes
+        </Button>
+        <Button
+          variant="outline-dark"
+          onClick={props.onHide}
+          className="border shadow rounded-pill"
+        >
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }

@@ -54,7 +54,6 @@ export default function AddGenre({
     return (
       <Formik
         initialValues={initialValues}
-        // onSubmit={onSubmitAddAuthor}
         onSubmit={handleSubmit}
         validationSchema={schema}
       >

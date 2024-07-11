@@ -52,7 +52,7 @@ export default function EditAuthor(props) {
         props.onHide(); // Close the modal after submission
       } catch (error) {
         console.error(
-          "There was a problem with the new book POST request:",
+          "There was a problem with the Author edit (PUT) request:",
           error
         );
       }
@@ -135,11 +135,19 @@ export default function EditAuthor(props) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleSave}>
+        <Button
+          variant="outline-success"
+          onClick={handleSave}
+          className="border shadow rounded-pill"
+        >
           Save Changes
         </Button>
 
-        <Button variant="secondary" onClick={props.onHide}>
+        <Button
+          variant="outline-dark"
+          onClick={props.onHide}
+          className="border shadow rounded-pill"
+        >
           Close
         </Button>
       </Modal.Footer>

@@ -18,6 +18,8 @@ export default function AllGenres() {
 
   const [addShow, setAddShow] = useState(false);
 
+  const [imgURlArray, setImgURLArray] = useState([]);
+
   useEffect(() => {
     const fetchGenresData = async () => {
       try {
@@ -28,6 +30,19 @@ export default function AllGenres() {
         const jsonData = await response.json();
         console.log("jsonData", jsonData);
         setListOfGenres(jsonData);
+
+        /**populate images from genres table in an imgURL array */
+
+        // Extract or transform data from the dataset
+        const imgURL = jsonData.map((genre) => ({
+          id: genre.genre_id,
+          imageUrl: genre.image_url,
+        }));
+
+        // Update the state with the constructed array
+        setImgURLArray(imgURL);
+        console.log("Genres imgURlArray:", imgURlArray);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching genres data:", error);
@@ -70,7 +85,6 @@ export default function AllGenres() {
       >
         ~~~~~~~~~~~~~ADD A GENRE~~~~~~~~~~~~~
       </Button>
-
       <AddGenre
         addShow={addShow}
         setAddShow={setAddShow}
@@ -80,12 +94,15 @@ export default function AllGenres() {
 
       {listOfGenres?.length > 0 ? (
         listOfGenres.map((genre, key) => {
+          const imgUrl =
+            imgURlArray[key]?.imageUrl ||
+            "/images/genres/genreimageunavailable.jpg";
           return (
             <div key={key} className="d-flex col m-2">
               <Card className="shadow">
                 <Card.Img
                   variant="top"
-                  src="/images/authors/david-godman.jpeg"
+                  src={imgUrl}
                   alt="genre specific image"
                   style={{ maxHeight: "300px" }}
                 />
