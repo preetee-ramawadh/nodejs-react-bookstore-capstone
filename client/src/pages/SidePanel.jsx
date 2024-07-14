@@ -96,7 +96,7 @@ export default function SidePanel() {
               role="img"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 576 512"
-              className="svg-inline--fa fa-alien-monster fa-w-18 fa-9x"
+              //className="svg-inline--fa fa-alien-monster fa-w-18 fa-9x"
             >
               <g className="fa-group">
                 <path
@@ -125,7 +125,7 @@ export default function SidePanel() {
               role="img"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 576 512"
-              className="svg-inline--fa fa-space-station-moon-alt fa-w-16 fa-5x"
+              //className="svg-inline--fa fa-space-station-moon-alt fa-w-16 fa-5x"
             >
               <g className="fa-group">
                 {/* <path

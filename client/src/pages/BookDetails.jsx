@@ -25,7 +25,11 @@ export default function BookDetails(props) {
         <h4>Published On: {props.selectedbook.publication_date}</h4>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>
+        <Button
+          variant="outline-dark"
+          onClick={props.onHide}
+          className="rounded-pill"
+        >
           Close
         </Button>
       </Modal.Footer>

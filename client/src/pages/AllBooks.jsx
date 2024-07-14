@@ -12,8 +12,17 @@ import SortBookPrice from "./SortBookPrice";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import EditIcon from "./EditIcon";
+import PaginationOnData from "./PaginationOnData";
 
-export default function AllBooks() {
+export default function AllBooks({
+  currentPage,
+  setCurrentPage,
+  recordsPerPage,
+  filteredRecords,
+  setFilteredRecords,
+  search,
+  setSearch,
+}) {
   const [listOfBooks, setListOfBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedbook, setSelectedBook] = useState({});
@@ -36,8 +45,6 @@ export default function AllBooks() {
 
   const [sortBookByNameStatus, setSortBookByNameStatus] = useState(true);
 
-  const [search, setSearch] = useState("");
-
   const [imgURlArray, setImgURLArray] = useState([]);
 
   //const [searchByAuthor, setSearchByAuthor] = useState("");
@@ -45,6 +52,27 @@ export default function AllBooks() {
   useEffect(() => {
     fetchBooksData();
   }, []);
+
+  //filtering data
+  useEffect(() => {
+    const filtered = listOfBooks.filter((book) => {
+      return search.toLowerCase() === ""
+        ? book
+        : book.title.toLowerCase().includes(search);
+    });
+
+    setFilteredRecords(filtered);
+    setsortBookByName(filtered);
+    setsortBookByPrice(filtered);
+  }, [search, listOfBooks]);
+
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = filteredRecords.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+  const nPages = Math.ceil(filteredRecords?.length / recordsPerPage);
 
   const fetchBooksData = async () => {
     try {
@@ -55,8 +83,6 @@ export default function AllBooks() {
       const jsonData = await response.json();
       console.log("jsonData", jsonData);
       setListOfBooks(jsonData);
-      setsortBookByPrice(jsonData);
-      setsortBookByName(jsonData);
 
       /**populate images from genres table in an imgURL array */
 
@@ -134,9 +160,9 @@ export default function AllBooks() {
         booktodelete={booktodelete}
       />
       <Button
-        variant="outline-secondary border-2"
+        variant="outline-secondary"
         onClick={() => addBook()}
-        className="border border-dark-subtle shadow fw-bold ms-1"
+        className="border border-dark-subtle shadow fw-bold ms-1 rounded-pill"
         style={{ width: "99%" }}
       >
         ~~~~~~~~~~~~~ADD A BOOK~~~~~~~~~~~~~
@@ -196,80 +222,82 @@ export default function AllBooks() {
         </Nav.Item> */}
       </Nav>
 
-      {listOfBooks?.length > 0 ? (
-        listOfBooks
-          .filter((book) => {
-            return search.toLowerCase() === ""
-              ? book
-              : book.title.toLowerCase().includes(search);
-          })
-          .map((book, key) => {
-            const imgUrl =
-              imgURlArray[key]?.imageUrl ||
-              "/images/books/imageunavailable.jpg";
-            return (
-              <div key={key} className="d-flex col m-2">
-                <Card
-                  style={{ borderRadius: "0 0 4em 0" }}
-                  className="border shadow overflow-hidden"
-                >
-                  <Card.Img
-                    variant="top"
-                    src={imgUrl}
-                    alt="no image"
-                    style={{ maxHeight: "300px" }}
-                  />
-                  <Card.Body className="text-center bg-dark">
-                    <Card.Link
-                      id={book.book_id}
-                      href="#"
-                      onClick={() => {
-                        showBookDetails(book);
-                      }}
-                      className="text-light text-capitalize text-decoration-none fs-4"
-                    >
-                      {book.title}
-                    </Card.Link>
-                  </Card.Body>
-                  <Card.Footer className="border-0 text-center bg-dark">
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => editBookDetails(book)}
-                      className="me-3 mb-1 shadow border rounded-pill"
-                    >
-                      <EditIcon />
-                    </Button>
+      <PaginationOnData
+        nPages={nPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
 
-                    <Button
-                      variant="outline-danger"
-                      //onClick={() => deleteBook(book.book_id)}
-                      onClick={() => {
-                        setbooktodelete(book.book_id);
-                        setAlertShow(true);
-                      }}
-                      className="rounded-circle border fw-bold"
-                    >
-                      {" "}
-                      X
-                    </Button>
-                  </Card.Footer>
-                </Card>
-
-                <BookDetails
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                  selectedbook={selectedbook}
+      {currentRecords?.length > 0 ? (
+        currentRecords.map((book, key) => {
+          const imgUrl =
+            imgURlArray[key]?.imageUrl || "/images/books/imageunavailable.jpg";
+          return (
+            <div key={key} className="col mt-3 ">
+              <Card
+                style={{
+                  borderRadius: "0 2em 0 0",
+                  maxHeight: "500px",
+                  maxWidth: "250px",
+                }}
+                className="overflow-hidden border border-2 border-start-0 border-top-0"
+              >
+                <Card.Img
+                  variant="top"
+                  src={imgUrl}
+                  alt="no image"
+                  style={{ maxHeight: "200px", maxWidth: "250px" }}
                 />
+                <Card.Body className="text-center bg-dark">
+                  <Card.Link
+                    id={book.book_id}
+                    href="#"
+                    onClick={() => {
+                      showBookDetails(book);
+                    }}
+                    className="text-light text-capitalize text-decoration-none fs-4"
+                  >
+                    {book.title}
+                  </Card.Link>
+                </Card.Body>
+                <Card.Footer className="border-0 text-center bg-dark">
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => editBookDetails(book)}
+                    className="me-3 mb-1 shadow border rounded-pill"
+                  >
+                    <EditIcon />
+                  </Button>
 
-                <EditBook
-                  show={modalEditShow}
-                  onHide={() => setModalEditShow(false)}
-                  selectedbook={selectedbook}
-                  updatebook={updatebook}
-                />
-              </div>
-            );
-          })
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => {
+                      setbooktodelete(book.book_id);
+                      setAlertShow(true);
+                    }}
+                    className="rounded-circle border fw-bold"
+                  >
+                    {" "}
+                    X
+                  </Button>
+                </Card.Footer>
+              </Card>
+
+              <BookDetails
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                selectedbook={selectedbook}
+              />
+
+              <EditBook
+                show={modalEditShow}
+                onHide={() => setModalEditShow(false)}
+                selectedbook={selectedbook}
+                updatebook={updatebook}
+              />
+            </div>
+          );
+        })
       ) : (
         <h1>No books available!!</h1>
       )}

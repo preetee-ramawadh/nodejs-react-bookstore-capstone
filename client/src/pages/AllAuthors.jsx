@@ -11,8 +11,17 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import SortAuthorName from "./SortAuthorName";
 import EditIcon from "./EditIcon";
+import PaginationOnData from "./PaginationOnData";
 
-export default function AllAuthors() {
+export default function AllAuthors({
+  currentPage,
+  setCurrentPage,
+  recordsPerPage,
+  filteredRecords,
+  setFilteredRecords,
+  search,
+  setSearch,
+}) {
   const [listOfAuthors, setListOfAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedauthor, setSelectedAuthor] = useState({});
@@ -31,8 +40,6 @@ export default function AllAuthors() {
 
   const [sortAuthorByNameStatus, setSortAuthorByNameStatus] = useState(true);
 
-  const [search, setSearch] = useState("");
-
   const [imgURlArray, setImgURLArray] = useState([]);
 
   useEffect(() => {
@@ -45,7 +52,6 @@ export default function AllAuthors() {
         const jsonData = await response.json();
         console.log("jsonData", jsonData);
         setListOfAuthors(jsonData);
-        setsortAuthorByName(jsonData);
 
         /**populate images from genres table in an imgURL array */
 
@@ -66,6 +72,26 @@ export default function AllAuthors() {
     };
     fetchAuthorsData();
   }, []);
+
+  //filtering data
+  useEffect(() => {
+    const filtered = listOfAuthors.filter((author) => {
+      return search.toLowerCase() === ""
+        ? author
+        : author.name.toLowerCase().includes(search);
+    });
+
+    setFilteredRecords(filtered);
+    setsortAuthorByName(filtered);
+  }, [search, listOfAuthors]);
+
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = filteredRecords.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+  const nPages = Math.ceil(filteredRecords.length / recordsPerPage);
 
   //function to pass to child component to update author
   const updateauthor = (updatedAuthor) => {
@@ -122,7 +148,7 @@ export default function AllAuthors() {
       <Button
         variant="outline-secondary"
         onClick={() => setAddShow(true)}
-        className="shadow border border-secondary fw-bold ms-1"
+        className="shadow border border-dark-subtle fw-bold ms-1 rounded-pill"
         style={{ width: "99%" }}
       >
         ~~~~~~~~~~~~~ADD AN AUTHOR~~~~~~~~~~~~~
@@ -160,80 +186,88 @@ export default function AllAuthors() {
         </Nav.Item>
       </Nav>
 
-      {listOfAuthors?.length > 0 ? (
-        listOfAuthors
-          .filter((author) => {
-            return search.toLowerCase() === ""
-              ? author
-              : author.name.toLowerCase().includes(search);
-          })
-          .map((author, key) => {
-            const imgUrl =
-              imgURlArray[key]?.imageUrl ||
-              "/images/authors/imagesunavailable.jpg";
+      <PaginationOnData
+        nPages={nPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
 
-            return (
-              <div key={key} className="d-flex col m-2">
-                <Card className="border shadow rounded-pill text-center overflow-hidden">
-                  <Card.Img
-                    variant="top"
-                    //src="/images/authors/imagesunavailable.jpg"
-                    //src={author.image_url}
-                    src={imgUrl}
-                    alt="no image"
-                  />
+      {currentRecords?.length > 0 ? (
+        currentRecords.map((author, key) => {
+          const imgUrl =
+            imgURlArray[key]?.imageUrl ||
+            "/images/authors/imagesunavailable.jpg";
 
-                  <Card.Body className="bg-dark">
-                    <Card.Link
-                      id={author.author_id}
-                      href="#"
-                      onClick={() => {
-                        showAuthorDetails(author);
-                      }}
-                      className="text-light text-capitalize text-center text-decoration-none fs-4"
-                    >
-                      {author.name}
-                    </Card.Link>
-                  </Card.Body>
-                  <Card.Footer className="border-0 bg-dark text-center">
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => {
-                        editAuthorDetails(author);
-                      }}
-                      className="me-3 mb-1 shadow border rounded-pill"
-                    >
-                      <EditIcon />
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                      onClick={() => {
-                        setauthoridtodelete(author.author_id);
-                        setAlertShow(true);
-                      }}
-                      className="rounded-circle border fw-bold mb-1"
-                    >
-                      {" "}
-                      X
-                    </Button>
-                  </Card.Footer>
-                </Card>
-
-                <AuthorDetails
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                  selectedauthor={selectedauthor}
+          return (
+            <div key={key} className="col m-2">
+              <Card
+                className="border rounded-pill text-center overflow-hidden border-2 border-start-0 border-top-0"
+                style={{
+                  borderRadius: "0 0 4em 0",
+                  maxHeight: "500px",
+                  maxWidth: "250px",
+                }}
+              >
+                <Card.Img
+                  variant="top"
+                  //src="/images/authors/imagesunavailable.jpg"
+                  //src={author.image_url}
+                  src={imgUrl}
+                  alt="no image"
+                  style={{ maxHeight: "200px", maxWidth: "250px" }}
                 />
 
-                <EditAuthor
-                  show={showEditAuthorModal}
-                  onHide={() => setShowEditAuthorModal(false)}
-                  selectedauthor={selectedauthor}
-                  updateauthor={updateauthor}
-                />
-              </div>
-            );
-          })
+                <Card.Body className="bg-dark">
+                  <Card.Link
+                    id={author.author_id}
+                    href="#"
+                    onClick={() => {
+                      showAuthorDetails(author);
+                    }}
+                    className="text-light text-capitalize text-center text-decoration-none fs-4"
+                  >
+                    {author.name}
+                  </Card.Link>
+                </Card.Body>
+                <Card.Footer className="border-0 bg-dark text-center">
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => {
+                      editAuthorDetails(author);
+                    }}
+                    className="me-3 mb-1 shadow border rounded-pill"
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => {
+                      setauthoridtodelete(author.author_id);
+                      setAlertShow(true);
+                    }}
+                    className="rounded-circle border fw-bold mb-1"
+                  >
+                    {" "}
+                    X
+                  </Button>
+                </Card.Footer>
+              </Card>
+
+              <AuthorDetails
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                selectedauthor={selectedauthor}
+              />
+
+              <EditAuthor
+                show={showEditAuthorModal}
+                onHide={() => setShowEditAuthorModal(false)}
+                selectedauthor={selectedauthor}
+                updateauthor={updateauthor}
+              />
+            </div>
+          );
+        })
       ) : (
         <h1>No Authors Present!!</h1>
       )}

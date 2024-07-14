@@ -29,20 +29,20 @@ export default function GenreDetails(props) {
           {props.selectedgenre.Books?.length > 0 ? (
             props.selectedgenre.Books?.map((book) => (
               <li key={book.book_id}>
-                <h4>
-                  <i>{book.title}</i>
-                </h4>
+                <h4>{book.title}</h4>
               </li>
             ))
           ) : (
-            <h4>
-              <i>No Books available in this genre</i>
-            </h4>
+            <h4>No Books available in this genre</h4>
           )}
         </ul>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>
+        <Button
+          variant="outline-secondary"
+          onClick={props.onHide}
+          className="rounded-pill"
+        >
           Close
         </Button>
       </Modal.Footer>
