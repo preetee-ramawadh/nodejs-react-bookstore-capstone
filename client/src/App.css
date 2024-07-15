@@ -37,9 +37,9 @@ body {
 
 main {
   /* margin-left: 5rem; */
-  padding: 1rem;
   /* margin-right: 5rem; */
   /* flex-wrap: wrap; */
+  padding: 1rem;
   background-color: var(--bg-primary);
 }
 
@@ -276,7 +276,7 @@ a:hover {
 .fixed-container {
   position: sticky; /* Fixed relative to the parent container */
   top: 0; /* Stick to the top of the row */
-  background-color: #f4f4f4;
+  background-color: #ececec;
   border-bottom: 1px solid #ddd;
   z-index: 10; /* Ensures it stays above other content */
   padding: 10px;

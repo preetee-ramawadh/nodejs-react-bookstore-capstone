@@ -13,18 +13,18 @@ export default function AuthorDetails(props) {
       keyboard={false}
       centered
     >
-      <Modal.Header closeButton className="bg-info text-dark">
+      <Modal.Header closeButton className="bg-dark text-light text-capitalize">
         <Placeholder
           as={Modal.Title}
           animation="glow"
           id="contained-modal-title-vcenter"
         >
-          <Placeholder bg="info">
+          <Placeholder bg="dark">
             <strong>{props.selectedauthor.name}</strong>
           </Placeholder>
         </Placeholder>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="bg-secondary bg-opacity-50">
         <h3 className="text-center">
           <strong>Biography</strong>
         </h3>
@@ -35,7 +35,7 @@ export default function AuthorDetails(props) {
           <strong>Penned Books</strong>
         </h3>
 
-        <ul className="text-info">
+        <ul className="text-dark">
           {props.selectedauthor.Books?.length > 0 ? (
             props.selectedauthor.Books?.map((book) => (
               <li key={book.book_id}>
@@ -51,8 +51,8 @@ export default function AuthorDetails(props) {
           )}
         </ul>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>
+      <Modal.Footer className="bg-secondary">
+        <Button variant="outline-dark rounded-pill" onClick={props.onHide}>
           Close
         </Button>
       </Modal.Footer>

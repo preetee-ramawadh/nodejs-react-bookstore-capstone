@@ -13,19 +13,19 @@ export default function GenreDetails(props) {
       keyboard={false}
       centered
     >
-      <Modal.Header closeButton className="bg-info text-dark">
+      <Modal.Header closeButton className="bg-dark text-light text-capitalize">
         <Placeholder
           as={Modal.Title}
           animation="glow"
           id="contained-modal-title-vcenter"
         >
-          <Placeholder bg="info">
+          <Placeholder bg="dark">
             <strong>{props.selectedgenre.genre_name}</strong>
           </Placeholder>
         </Placeholder>
       </Modal.Header>
-      <Modal.Body>
-        <ul className="text-info">
+      <Modal.Body className="bg-secondary bg-opacity-50">
+        <ul className="text-dark">
           {props.selectedgenre.Books?.length > 0 ? (
             props.selectedgenre.Books?.map((book) => (
               <li key={book.book_id}>
@@ -37,9 +37,9 @@ export default function GenreDetails(props) {
           )}
         </ul>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="bg-secondary">
         <Button
-          variant="outline-secondary"
+          variant="outline-dark"
           onClick={props.onHide}
           className="rounded-pill"
         >

@@ -1,10 +1,11 @@
 import React from "react";
+import HomePageCarousal from "./HomePageCarousal";
 
 export default function Home() {
   return (
-    <div className="text-secondary">
-      <h1>Welcome to BookStore</h1>
-      <p>a brief description is required here!!</p>
+    <div className="text-secondary text-center">
+      <h1>Welcome to BookShip</h1>
+      <HomePageCarousal />
     </div>
   );
 }

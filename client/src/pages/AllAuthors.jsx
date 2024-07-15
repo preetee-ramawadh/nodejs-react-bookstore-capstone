@@ -137,61 +137,62 @@ export default function AllAuthors({
 
   return (
     <div className="row">
-      <DeleteAlertAuthor
-        alertShow={alertShow}
-        setAlertShow={setAlertShow}
-        listOfAuthors={listOfAuthors}
-        setListOfAuthors={setListOfAuthors}
-        authoridtodelete={authoridtodelete}
-        value="Author"
-      />
-      <Button
-        variant="outline-secondary"
-        onClick={() => setAddShow(true)}
-        className="shadow border border-dark-subtle fw-bold ms-1 rounded-pill"
-        style={{ width: "99%" }}
-      >
-        ~~~~~~~~~~~~~ADD AN AUTHOR~~~~~~~~~~~~~
-      </Button>
+      <div className="fixed-container">
+        <DeleteAlertAuthor
+          alertShow={alertShow}
+          setAlertShow={setAlertShow}
+          listOfAuthors={listOfAuthors}
+          setListOfAuthors={setListOfAuthors}
+          authoridtodelete={authoridtodelete}
+          value="Author"
+        />
+        <Button
+          variant="outline-secondary"
+          onClick={() => setAddShow(true)}
+          className="shadow border border-dark fw-bold ms-1 rounded-pill"
+          style={{ width: "99%" }}
+        >
+          ~~~~~~~~~~~~~ADD AN AUTHOR~~~~~~~~~~~~~
+        </Button>
 
-      <AddAuthor
-        addShow={addShow}
-        setAddShow={setAddShow}
-        listOfAuthors={listOfAuthors}
-        setListOfAuthors={setListOfAuthors}
-      />
+        <AddAuthor
+          addShow={addShow}
+          setAddShow={setAddShow}
+          listOfAuthors={listOfAuthors}
+          setListOfAuthors={setListOfAuthors}
+        />
 
-      <Nav className="justify-content-end mt-3">
-        <Nav.Item style={{ width: "auto" }}>
-          <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
-            {" "}
-            <SortAuthorName
-              sortAuthorByName={sortAuthorByName}
-              setsortAuthorByName={setsortAuthorByName}
-              sortAuthorByNameStatus={sortAuthorByNameStatus}
-              setSortAuthorByNameStatus={setSortAuthorByNameStatus}
-            />
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item style={{ width: "50%" }}>
-          <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
-            <Form.Control
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              placeholder="Search an Author by Name"
-              aria-label="Search an Author by Name"
-            />
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
+        <Nav className="justify-content-end mt-3">
+          <Nav.Item style={{ width: "auto" }}>
+            <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
+              {" "}
+              <SortAuthorName
+                sortAuthorByName={sortAuthorByName}
+                setsortAuthorByName={setsortAuthorByName}
+                sortAuthorByNameStatus={sortAuthorByNameStatus}
+                setSortAuthorByNameStatus={setSortAuthorByNameStatus}
+              />
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item style={{ width: "50%" }}>
+            <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
+              <Form.Control
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                placeholder="Search an Author by Name"
+                aria-label="Search an Author by Name"
+              />
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
 
-      <PaginationOnData
-        nPages={nPages}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-
+        <PaginationOnData
+          nPages={nPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
       {currentRecords?.length > 0 ? (
         currentRecords.map((author, key) => {
           const imgUrl =

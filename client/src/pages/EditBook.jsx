@@ -152,7 +152,7 @@ export default function EditBook(props) {
       centered
       className="bg-secondary bg-opacity-10"
     >
-      <Modal.Header closeButton className="bg-info">
+      <Modal.Header closeButton className="bg-primary bg-opacity-75">
         <Modal.Title id="contained-modal-title-vcenter">
           Edit Book Details
         </Modal.Title>
@@ -161,7 +161,7 @@ export default function EditBook(props) {
         <Form
           noValidate
           onSubmit={handleSave}
-          className="m-1 p-1 shadow bg-secondary bg-opacity-50"
+          className="m-1 p-1 shadow bg-dark bg-opacity-75"
         >
           <Row className="m-2">
             <Form.Group as={Col} controlId="validationFormik01">
@@ -306,7 +306,7 @@ export default function EditBook(props) {
           </Row>
         </Form>
       </Modal.Body>
-      <Modal.Footer className="bg-info">
+      <Modal.Footer className="bg-primary bg-opacity-50">
         <Button
           variant="outline-success"
           type="submit"

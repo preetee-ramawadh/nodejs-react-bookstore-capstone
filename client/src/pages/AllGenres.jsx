@@ -110,51 +110,53 @@ export default function AllGenres({
 
   return (
     <div className="row">
-      <Button
-        variant="outline-secondary"
-        onClick={() => setAddShow(true)}
-        className="border border-dark-subtle shadow fw-bold ms-1 rounded-pill fixed-item"
-        style={{ width: "99%" }}
-      >
-        ~~~~~~~~~~~~~ADD A GENRE~~~~~~~~~~~~~
-      </Button>
-      <AddGenre
-        addShow={addShow}
-        setAddShow={setAddShow}
-        listOfGenres={listOfGenres}
-        setListOfGenres={setListOfGenres}
-      />
+      <div className="fixed-container">
+        <Button
+          variant="outline-secondary"
+          onClick={() => setAddShow(true)}
+          className="border border-dark shadow fw-bold ms-1 rounded-pill"
+          style={{ width: "99%" }}
+        >
+          ~~~~~~~~~~~~~ADD A GENRE~~~~~~~~~~~~~
+        </Button>
+        <AddGenre
+          addShow={addShow}
+          setAddShow={setAddShow}
+          listOfGenres={listOfGenres}
+          setListOfGenres={setListOfGenres}
+        />
 
-      <Nav className="justify-content-end mt-3 fixed-item">
-        <Nav.Item style={{ width: "auto" }}>
-          <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
-            {" "}
-            <SortGenreName
-              sortGenreByName={sortGenreByName}
-              setsortGenreByName={setsortGenreByName}
-              sortGenreByNameStatus={sortGenreByNameStatus}
-              setSortGenreByNameStatus={setSortGenreByNameStatus}
-            />
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item style={{ width: "50%" }}>
-          <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
-            <Form.Control
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              placeholder="Search a Genre by Name"
-              aria-label="Search an Genre by Name"
-            />
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
+        <Nav className="justify-content-end mt-3">
+          <Nav.Item style={{ width: "auto" }}>
+            <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
+              {" "}
+              <SortGenreName
+                sortGenreByName={sortGenreByName}
+                setsortGenreByName={setsortGenreByName}
+                sortGenreByNameStatus={sortGenreByNameStatus}
+                setSortGenreByNameStatus={setSortGenreByNameStatus}
+              />
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item style={{ width: "50%" }}>
+            <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
+              <Form.Control
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                placeholder="Search a Genre by Name"
+                aria-label="Search an Genre by Name"
+              />
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
 
-      <PaginationOnData
-        nPages={nPages}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+        <PaginationOnData
+          nPages={nPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
       {currentRecords?.length > 0 ? (
         currentRecords.map((genre, key) => {
           const imgUrl =
@@ -172,7 +174,7 @@ export default function AllGenres({
                   alt="genre specific image"
                   style={{ maxHeight: "200px" }}
                 />
-                <Card.Body className="text-center text-success bg-dark m-1">
+                <Card.Body className="text-center bg-dark">
                   <Card.Title>
                     <Card.Link
                       id={genre.genre_id}

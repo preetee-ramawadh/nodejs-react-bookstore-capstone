@@ -72,11 +72,11 @@ export default function EditAuthor(props) {
       centered
       className="bg-secondary bg-opacity-10"
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="bg-primary bg-opacity-75">
         <Modal.Title>Edit Author Details</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="bg-secondary bg-opacity-25">
-        <Form className="m-1 p-1 shadow bg-secondary bg-opacity-50">
+      <Modal.Body className="bg-primary bg-opacity-25">
+        <Form className="m-1 p-1 shadow bg-dark bg-opacity-75">
           <Row className="m-2">
             <Form.Group as={Col} controlId="validationFormik01">
               <Form.FloatingLabel
@@ -134,7 +134,7 @@ export default function EditAuthor(props) {
           </Row>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="bg-primary bg-opacity-50">
         <Button
           variant="outline-success"
           onClick={handleSave}

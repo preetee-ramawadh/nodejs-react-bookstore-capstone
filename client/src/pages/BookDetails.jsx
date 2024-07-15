@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Placeholder from "react-bootstrap/Placeholder";
 
 export default function BookDetails(props) {
   return (
@@ -11,25 +12,40 @@ export default function BookDetails(props) {
       backdrop="static"
       keyboard={false}
       centered
+      className="bg-secondary bg-opacity-10"
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Book Details
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h2 className="text-center">{props.selectedbook.title}</h2>
-        <h4>Author: {props.selectedbook.Author?.name}</h4>
-        <h4>Genre: {props.selectedbook.Genre?.genre_name}</h4>
-        <h4>Price: {props.selectedbook.price}</h4>
-        <h4>Published On: {props.selectedbook.publication_date}</h4>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="outline-dark"
-          onClick={props.onHide}
-          className="rounded-pill"
+      <Modal.Header closeButton className="bg-dark text-capitalize">
+        <Placeholder
+          as={Modal.Title}
+          animation="glow"
+          id="contained-modal-title-vcenter"
+          className="text-light"
         >
+          <Placeholder bg="dark">
+            <strong>{props.selectedbook.title}</strong>
+          </Placeholder>
+        </Placeholder>
+
+        <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="bg-secondary bg-opacity-50">
+        <h4 className="text-capitalize">
+          <strong>Author:</strong>
+          {props.selectedbook.Author?.name}
+        </h4>
+        <h4>
+          <strong>Genre:</strong> {props.selectedbook.Genre?.genre_name}
+        </h4>
+        <h4>
+          <strong>Price:</strong>
+          {props.selectedbook.price}
+        </h4>
+        <h4>
+          <strong>Published On:</strong> {props.selectedbook.publication_date}
+        </h4>
+      </Modal.Body>
+      <Modal.Footer className="bg-secondary">
+        <Button variant="outline-dark rounded-pill" onClick={props.onHide}>
           Close
         </Button>
       </Modal.Footer>
