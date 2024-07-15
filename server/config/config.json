@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Admin@2024",
-    "database": "bs",
+    "database": "bookship",
     "host": "localhost",
     "dialect": "mysql"
   },
