@@ -2,14 +2,14 @@ SHOW databases;
 
 # --------------------------------------------------------------------- #
 # Target DBMS:           MySQL 5                                        #
-# Project name:          bookship                                       #
+# Project name:          bookstore                                       #
 # Author:                Preetee Ram                                    #
 # Created on:            2024-07-15                                     #
 # --------------------------------------------------------------------  #
 
-CREATE DATABASE IF NOT EXISTS `bookship` /* !40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /* !80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `bookstore` /* !40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /* !80016 DEFAULT ENCRYPTION='N' */;
 
-USE bookship;
+USE bookstore;
 
 START TRANSACTION;
 
@@ -72,7 +72,7 @@ INSERT INTO Genres VALUES(1,'comedy','/images/genres/comedy.png','2024-07-10 08:
 INSERT INTO Genres VALUES(2,'classic','/images/genres/classic.png','2024-07-10 10:27:16','2024-07-10 10:27:16');
 INSERT INTO Genres VALUES(3,'fairytale','/images/genres/fairytale.png','2024-07-10 10:27:45','2024-07-10 10:27:45');
 INSERT INTO Genres VALUES(4,'esoteric','/images/genres/esoteric.png','2024-07-10 10:28:04','2024-07-10 10:28:04');
-INSERT INTO Genres VALUES(5,'autobiography','/images/genres/autobiography.jpg','2024-07-10 11:27:09','2024-07-10 11:27:09');
+INSERT INTO Genres VALUES(5,'autobiography','/images/genres/autobiography.png','2024-07-10 11:27:09','2024-07-10 11:27:09');
 INSERT INTO Genres VALUES(6,'thriller','/images/genres/thriller.png','2024-07-10 10:27:16','2024-07-10 10:27:16');
 INSERT INTO Genres VALUES(7,'fiction','/images/genres/fiction.png','2024-07-10 10:27:16','2024-07-10 10:27:16');
 INSERT INTO Genres VALUES(8,'biography','/images/genres/biography.png','2024-08-10 10:27:16','2024-08-10 10:27:16');
@@ -110,11 +110,9 @@ INSERT INTO Authors VALUES(8,'Paulo Coelho','Paulo Coelho was born on August 24,
 
 Coelho\'s early life was marked by a rebellious spirit, and he struggled with a variety of personal issues before turning to writing. His career took off after the publication of "The Alchemist", which became an international bestseller and established him as a significant literary figure. Coelho\'s writing often explores themes of spirituality, destiny, and self-discovery.','/images/authors/paulo-coelho.jpg','2024-07-12 10:48:33','2024-07-12 10:48:33');
 
-INSERT INTO Authors VALUES(9,'David Godman','David Godman is a well-regarded author and teacher known for his writings on Sri Ramana Maharshi and other Indian spiritual teachers. Born on March 8, 1954, in the United Kingdom, Godman’s work primarily focuses on the life and teachings of Sri Ramana Maharshi, a revered modern Indian sage. 
-Godman has authored several books on Sri Ramana Maharshi and other related topics. His notable works include "Be As You Are: The Teachings of Sri Ramana Maharshi", "The Teachings of Sri Ramana Maharshi in His Own Words", and "Reminiscences of the Early Days with Bhagavan Sri Ramana Maharshi". These books are appreciated for their clarity and insight into Maharshi\'s teachings.','/images/authors/david-godman.jpg','2024-07-12 10:49:33','2024-07-12 10:49:33');
+INSERT INTO Authors VALUES(9,'rk narayanan','R.K. Narayan, full name Rasipuram Krishnaswami Iyer Narayanaswami, was an influential Indian writer known for his contributions to English literature. He was born on October 10, 1906, in Chennai, India, and passed away on May 13, 2001.','/images/authors/rk-narayanan.jpg','2024-07-12 10:49:33','2024-07-12 10:49:33');
 
-INSERT INTO Authors VALUES(10,'David Godman','David Godman is a well-regarded author and teacher known for his writings on Sri Ramana Maharshi and other Indian spiritual teachers. Born on March 8, 1954, in the United Kingdom, Godman’s work primarily focuses on the life and teachings of Sri Ramana Maharshi, a revered modern Indian sage. 
-Godman has authored several books on Sri Ramana Maharshi and other related topics. His notable works include "Be As You Are: The Teachings of Sri Ramana Maharshi", "The Teachings of Sri Ramana Maharshi in His Own Words", and "Reminiscences of the Early Days with Bhagavan Sri Ramana Maharshi". These books are appreciated for their clarity and insight into Maharshi\'s teachings.','/images/authors/david-godman.jpg','2024-07-12 10:47:33','2024-07-12 10:47:33');
+INSERT INTO Authors VALUES(10,'Paul Brunton','Paul Brunton, born Raphael Hurst on December 21, 1898, was a British writer and philosopher renowned for his works on Eastern spirituality and philosophy. He passed away on July 27, 1981.','/images/authors/Paul-Brunton.jpg','2024-07-12 10:47:33','2024-07-12 10:47:33');
 
 INSERT INTO Authors VALUES(11,'Gyllian Flynn','Gillian Flynn is an acclaimed American author known for her gripping psychological thrillers and screenwriting. Born on February 24, 1971, in Kansas City, Missouri, Flynn has made a significant impact on contemporary literature with her distinctive style and complex characters. 
 In addition to her novels, Flynn has worked as a screenwriter. She adapted her own novel "Gone Girl" into a screenplay for the 2014 film, which received critical acclaim and several award nominations.','/images/authors/david-godman.jpg','2024-07-12 10:47:33','2024-07-12 10:47:33');
@@ -124,7 +122,7 @@ In addition to her novels, Flynn has worked as a screenwriter. She adapted her o
 # ---------------------------------------------------------------------- #
 
 INSERT INTO Books VALUES(1,'The Poison Tree',4,7,500,'1884-01-01','/images/books/the-poision-tree.jpg','2024-07-10 08:18:57','2024-07-11 07:54:52');
-INSERT INTO Books VALUES(2,'The Story of My Experiments with Truth',1,5,200,'1927-01-01','/images/books/my-experiments-with-truth.jpg','2024-07-10 09:00:51','2024-07-14 10:59:41');
+INSERT INTO Books VALUES(2,'The Power of Nonviolence',1,5,200,'1927-01-01','/images/books/my-experiments-with-truth.jpg','2024-07-10 09:00:51','2024-07-14 10:59:41');
 INSERT INTO Books VALUES(3,'It Starts with Us',6,4,600,'2022-10-18','/images/books/it-starts-with-us.jpg','2024-07-10 11:50:45','2024-07-10 11:50:45');
 INSERT INTO Books VALUES(4,'It Ends with Us',6,4,600,'2016-08-02','/images/books/it-ends-with-us.jpg','2024-07-12 08:31:21','2024-07-14 10:31:26');
 INSERT INTO Books VALUES(5,'Wings of Fire',5,5,300,'1999-03-01','/images/books/wings-of-fire.jpg','2024-07-12 11:48:59','2024-07-14 10:30:34');
@@ -133,6 +131,9 @@ INSERT INTO Books VALUES(7,'common-uncommon',2,7,300,'2021-05-10','/images/books
 INSERT INTO Books VALUES(8,'Autobiography of a Yogi',3,5,1200,'1946-09-01','/images/books/autobiography-of-a-yogi.jpg','2024-07-12 13:24:39','2024-07-12 13:24:39');
 INSERT INTO Books VALUES(9,'The Alchemist',8,7,800,'1988-04-01','/images/books/the_alchemist.jpg','2024-07-14 08:58:18','2024-07-14 08:58:18');
 INSERT INTO Books VALUES(10,'Gone Girl',11,6,350,'2012-06-05','/images/books/gone-girl.jpg','2024-07-14 08:58:43','2024-07-14 08:58:43');
+INSERT INTO Books VALUES(11,'a search in secret india',11,6,350,'2012-06-05','/images/books/a-search-in-secret-india.jpg','2024-07-14 08:58:43','2024-07-14 08:58:43');
+INSERT INTO Books VALUES(12,'the magic drum',7,6,250,'2012-06-05','/images/books/the-magic-drum.jpg','2024-07-14 08:58:43','2024-07-14 08:58:43');
+INSERT INTO Books VALUES(13,'malgudi days123',9,6,350,'2012-06-05','/images/books/malgudi-days.jpg','2024-07-14 08:58:43','2024-07-14 08:58:43');
 
 COMMIT;
 
