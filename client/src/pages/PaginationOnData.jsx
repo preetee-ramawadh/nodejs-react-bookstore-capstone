@@ -28,7 +28,7 @@ export default function PaginationOnData({
       <ul className="pagination justify-content-end fw-bold mb-0 me-3">
         <li className="page-item">
           <a
-            className="page-link border border-secondary border-1 bg-secondary"
+            className="page-link border border-secondary border-1 bg-secondary bg-opacity-50"
             onClick={goToPrevPage}
             href="#"
             style={{ height: "auto" }}
@@ -56,7 +56,7 @@ export default function PaginationOnData({
           >
             <a
               onClick={() => setCurrentPage(pgNumber)}
-              className="page-link border border-secondary border-1 bg-secondary"
+              className="page-link border border-secondary border-1 bg-secondary bg-opacity-50"
               href="#"
             >
               {pgNumber}
@@ -65,7 +65,7 @@ export default function PaginationOnData({
         ))}
         <li className="page-item">
           <a
-            className="page-link border border-secondary border-1 bg-secondary"
+            className="page-link border border-secondary border-1 bg-secondary bg-opacity-50"
             onClick={goToNextPage}
             href="#"
             disabled={currentPage === nPages}

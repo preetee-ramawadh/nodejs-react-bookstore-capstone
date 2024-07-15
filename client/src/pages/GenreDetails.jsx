@@ -25,7 +25,7 @@ export default function GenreDetails(props) {
         </Placeholder>
       </Modal.Header>
       <Modal.Body className="bg-info bg-opacity-25">
-        <ol className="text-dark">
+        <ol className="text-dark text-capitalize">
           <strong>
             {props.selectedgenre.Books?.length > 0 ? (
               props.selectedgenre.Books?.map((book) => (

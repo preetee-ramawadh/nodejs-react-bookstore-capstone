@@ -14,7 +14,11 @@ function HomePageCarousal() {
           <h2>
             <strong>BookShip</strong>
           </h2>
-          <p>Connecting the World through Books.</p>
+          <h3>
+            <strong>
+              <u>Connecting the World through Books.</u>
+            </strong>
+          </h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>

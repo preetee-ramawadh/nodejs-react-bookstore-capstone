@@ -72,11 +72,11 @@ export default function EditAuthor(props) {
       centered
       className="bg-secondary bg-opacity-10"
     >
-      <Modal.Header closeButton className="bg-primary bg-opacity-75">
+      <Modal.Header closeButton className="bg-primary bg-opacity-25">
         <Modal.Title>Edit Author Details</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-primary bg-opacity-25">
-        <Form className="m-1 p-1 shadow bg-dark bg-opacity-75">
+        <Form className="m-1 p-1 bg-primary bg-opacity-10">
           <Row className="m-2">
             <Form.Group as={Col} controlId="validationFormik01">
               <Form.FloatingLabel
@@ -112,7 +112,7 @@ export default function EditAuthor(props) {
                 label="Author's Biography"
               >
                 <Form.Control
-                  type="text"
+                  type="textarea"
                   name="biography"
                   aria-describedby="inputGroupPrependTitle"
                   value={updatedAuthorData.biography}

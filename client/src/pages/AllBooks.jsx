@@ -147,7 +147,7 @@ export default function AllBooks({
 
   return (
     <div className="row">
-      <div className="fixed-container">
+      <div className="fixed-container fa-secondary">
         <DeleteAlertBook
           alertShow={alertShow}
           setAlertShow={setAlertShow}

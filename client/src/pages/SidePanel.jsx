@@ -21,7 +21,7 @@ export default function SidePanel() {
   }
 
   return (
-    <nav className="navbar">
+    <nav className="navbar pt-0">
       <ul className="navbar-nav">
         <li className="logo">
           <a href="/" className="nav-link">

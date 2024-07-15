@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="containerCustom">
       <SidePanel />
-      <main className="scroll-container">
+      <main className="scroll-container pt-0">
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />

@@ -28,7 +28,7 @@ const DeleteAlertBook = ({
 
   if (alertShow) {
     return (
-      <Alert variant="warning" onClose={() => setAlertShow(false)} dismissible>
+      <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
         <Alert.Heading>
           Are you sure you want to delete the Book?
           <Button
