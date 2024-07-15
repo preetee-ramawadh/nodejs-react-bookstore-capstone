@@ -47,8 +47,6 @@ export default function AllBooks({
 
   const [imgURlArray, setImgURLArray] = useState([]);
 
-  //const [searchByAuthor, setSearchByAuthor] = useState("");
-
   useEffect(() => {
     fetchBooksData();
   }, []);
@@ -84,17 +82,14 @@ export default function AllBooks({
       console.log("jsonData", jsonData);
       setListOfBooks(jsonData);
 
-      /**populate images from genres table in an imgURL array */
+      // Create a dictionary of images keyed by book ID
+      const imgURLDictionary = jsonData.reduce((acc, book) => {
+        acc[book.book_id] = book.image_url;
+        return acc;
+      }, {});
 
-      // Extract or transform data from the dataset
-      const imgURL = jsonData.map((b) => ({
-        id: b.book_id,
-        imageUrl: b.image_url,
-      }));
-
-      // Update the state with the constructed array
-      setImgURLArray(imgURL);
-      console.log("books imgURlArray:", imgURlArray);
+      setImgURLArray(imgURLDictionary);
+      console.log("books imgURlArray:", imgURLDictionary);
 
       setLoading(false);
     } catch (error) {
@@ -161,7 +156,7 @@ export default function AllBooks({
           booktodelete={booktodelete}
         />
         <Button
-          variant="outline-secondary"
+          variant="secondary border-dark"
           onClick={() => addBook()}
           className="border border-dark shadow fw-bold ms-1 rounded-pill"
           style={{ width: "99%" }}
@@ -209,18 +204,6 @@ export default function AllBooks({
               />
             </Nav.Link>
           </Nav.Item>
-
-          {/* <Nav.Item style={{ width: "25%" }}>
-          <Nav.Link eventKey="link-3" style={{ height: "auto" }}>
-            <Form.Control
-              onChange={(e) => {
-                setSearchByAuthor(e.target.value);
-              }}
-              placeholder="Search Books by Author"
-              aria-label="Search Book by Author"
-            />
-          </Nav.Link>
-        </Nav.Item> */}
         </Nav>
 
         <PaginationOnData
@@ -232,14 +215,17 @@ export default function AllBooks({
       {currentRecords?.length > 0 ? (
         currentRecords.map((book, key) => {
           const imgUrl =
-            imgURlArray[key]?.imageUrl || "/images/books/imageunavailable.jpg";
+            imgURlArray[book.book_id] || "/images/books/imageunavailable.jpg";
+
           return (
             <div key={key} className="col mt-3 ">
               <Card
                 style={{
                   borderRadius: "0 2em 0 0",
+                  height: "380px",
+                  width: "265px",
                   maxHeight: "500px",
-                  maxWidth: "250px",
+                  maxWidth: "280px",
                 }}
                 className="overflow-hidden border border-2 border-start-0 border-top-0"
               >
@@ -247,9 +233,13 @@ export default function AllBooks({
                   variant="top"
                   src={imgUrl}
                   alt="no image"
-                  style={{ maxHeight: "200px", maxWidth: "250px" }}
+                  style={{
+                    maxHeight: "250px",
+                    width: "265px",
+                    height: "220px",
+                  }}
                 />
-                <Card.Body className="text-center bg-dark">
+                <Card.Body className="text-center bg-secondary">
                   <Card.Link
                     id={book.book_id}
                     href="#"
@@ -261,7 +251,7 @@ export default function AllBooks({
                     {book.title}
                   </Card.Link>
                 </Card.Body>
-                <Card.Footer className="border-0 text-center bg-dark">
+                <Card.Footer className="border-0 text-center bg-secondary">
                   <Button
                     variant="outline-primary"
                     onClick={() => editBookDetails(book)}
@@ -284,12 +274,6 @@ export default function AllBooks({
                 </Card.Footer>
               </Card>
 
-              <BookDetails
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                selectedbook={selectedbook}
-              />
-
               <EditBook
                 show={modalEditShow}
                 onHide={() => setModalEditShow(false)}
@@ -302,6 +286,12 @@ export default function AllBooks({
       ) : (
         <h1>No books available!!</h1>
       )}
+
+      <BookDetails
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        selectedbook={selectedbook}
+      />
     </div>
   );
 }

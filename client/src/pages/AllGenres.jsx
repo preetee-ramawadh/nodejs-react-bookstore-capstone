@@ -46,17 +46,14 @@ export default function AllGenres({
         console.log("jsonData", jsonData);
         setListOfGenres(jsonData);
 
-        /**populate images from genres table in an imgURL array */
+        // Create a dictionary of images keyed by genre ID
+        const imgURLDictionary = jsonData.reduce((acc, genre) => {
+          acc[genre.genre_id] = genre.image_url;
+          return acc;
+        }, {});
 
-        // Extract or transform data from the dataset
-        const imgURL = jsonData.map((genre) => ({
-          id: genre.genre_id,
-          imageUrl: genre.image_url,
-        }));
-
-        // Update the state with the constructed array
-        setImgURLArray(imgURL);
-        console.log("Genres imgURlArray:", imgURlArray);
+        setImgURLArray(imgURLDictionary);
+        console.log("genres imgURlArray:", imgURLDictionary);
 
         setLoading(false);
       } catch (error) {
@@ -112,7 +109,7 @@ export default function AllGenres({
     <div className="row">
       <div className="fixed-container">
         <Button
-          variant="outline-secondary"
+          variant="secondary border-dark"
           onClick={() => setAddShow(true)}
           className="border border-dark shadow fw-bold ms-1 rounded-pill"
           style={{ width: "99%" }}
@@ -160,21 +157,23 @@ export default function AllGenres({
       {currentRecords?.length > 0 ? (
         currentRecords.map((genre, key) => {
           const imgUrl =
-            imgURlArray[key]?.imageUrl ||
+            imgURlArray[genre.genre_id] ||
             "/images/genres/genreimageunavailable.jpg";
+
           return (
             <div className="col mt-3">
               <Card
                 key={key}
                 className="bg-dark border border-2 border-start-0 border-top-0 mt-3"
+                style={{ height: "270px", width: "240px" }}
               >
                 <Card.Img
                   variant="top"
                   src={imgUrl}
                   alt="genre specific image"
-                  style={{ maxHeight: "200px" }}
+                  style={{ height: "200px" }}
                 />
-                <Card.Body className="text-center bg-dark">
+                <Card.Body className="text-center bg-secondary">
                   <Card.Title>
                     <Card.Link
                       id={genre.genre_id}
@@ -195,6 +194,7 @@ export default function AllGenres({
       ) : (
         <h1>No Genre Present!!</h1>
       )}
+
       <GenreDetails
         show={modalShow}
         onHide={() => setModalShow(false)}

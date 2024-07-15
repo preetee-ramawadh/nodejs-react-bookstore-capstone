@@ -12,7 +12,7 @@ function App() {
   /** pagination logic */
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage] = useState(10);
+  const [recordsPerPage] = useState(8);
 
   const [filteredRecords, setFilteredRecords] = useState([]);
   const [search, setSearch] = useState("");
@@ -58,7 +58,8 @@ function App() {
                 <AllGenres
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  recordsPerPage={recordsPerPage}
+                  //recordsPerPage={recordsPerPage}
+                  recordsPerPage="4"
                   filteredRecords={filteredRecords}
                   setFilteredRecords={setFilteredRecords}
                   search={search}

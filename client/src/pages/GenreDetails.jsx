@@ -13,31 +13,33 @@ export default function GenreDetails(props) {
       keyboard={false}
       centered
     >
-      <Modal.Header closeButton className="bg-dark text-light text-capitalize">
+      <Modal.Header closeButton className="bg-info text-dark text-capitalize">
         <Placeholder
           as={Modal.Title}
           animation="glow"
           id="contained-modal-title-vcenter"
         >
-          <Placeholder bg="dark">
+          <Placeholder bg="info">
             <strong>{props.selectedgenre.genre_name}</strong>
           </Placeholder>
         </Placeholder>
       </Modal.Header>
-      <Modal.Body className="bg-secondary bg-opacity-50">
-        <ul className="text-dark">
-          {props.selectedgenre.Books?.length > 0 ? (
-            props.selectedgenre.Books?.map((book) => (
-              <li key={book.book_id}>
-                <h4>{book.title}</h4>
-              </li>
-            ))
-          ) : (
-            <h4>No Books available in this genre</h4>
-          )}
-        </ul>
+      <Modal.Body className="bg-info bg-opacity-25">
+        <ol className="text-dark">
+          <strong>
+            {props.selectedgenre.Books?.length > 0 ? (
+              props.selectedgenre.Books?.map((book) => (
+                <li key={book.book_id}>
+                  <h5>{book.title}</h5>
+                </li>
+              ))
+            ) : (
+              <h5>No Books available in this genre</h5>
+            )}
+          </strong>
+        </ol>
       </Modal.Body>
-      <Modal.Footer className="bg-secondary">
+      <Modal.Footer className="bg-info bg-opacity-50">
         <Button
           variant="outline-dark"
           onClick={props.onHide}

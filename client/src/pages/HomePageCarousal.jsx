@@ -3,9 +3,13 @@ import Image from "react-bootstrap/Image";
 
 function HomePageCarousal() {
   return (
-    <Carousel fade>
+    <Carousel fade interval={2000}>
       <Carousel.Item>
-        <Image src="/images/intro.jpg" fluid />
+        <Image
+          src="/images/intro.jpg"
+          fluid
+          className="border border-secondary"
+        />
         <Carousel.Caption className="text-dark">
           <h2>
             <strong>BookShip</strong>
@@ -14,7 +18,11 @@ function HomePageCarousal() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <Image src="/images/bookmission.jpg" fluid />
+        <Image
+          src="/images/bookmission.jpg"
+          fluid
+          className="border border-secondary"
+        />
         <Carousel.Caption>
           <h2>
             <strong>Mission</strong>
@@ -28,7 +36,11 @@ function HomePageCarousal() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <Image src="/images/bookvision.jpg" fluid />
+        <Image
+          src="/images/bookvision.jpg"
+          fluid
+          className="border border-secondary"
+        />
         <Carousel.Caption>
           <h2>
             <strong>Vision</strong>

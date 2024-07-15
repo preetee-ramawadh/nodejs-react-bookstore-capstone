@@ -157,11 +157,11 @@ export default function EditBook(props) {
           Edit Book Details
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="bg-secondary bg-opacity-25">
+      <Modal.Body className="bg-primary bg-opacity-25">
         <Form
           noValidate
           onSubmit={handleSave}
-          className="m-1 p-1 shadow bg-dark bg-opacity-75"
+          className="m-1 p-1 bg-primary bg-opacity-10"
         >
           <Row className="m-2">
             <Form.Group as={Col} controlId="validationFormik01">
@@ -185,7 +185,7 @@ export default function EditBook(props) {
                   isInvalid={!!errors.title}
                   required
                   autoComplete="off"
-                  className="shadow"
+                  //className="shadow"
                 />
                 <Form.Control.Feedback type="invalid" tooltip>
                   {/* {formikProps.errors.title} */}
@@ -207,11 +207,15 @@ export default function EditBook(props) {
                     })
                   }
                   isInvalid={!!errors.author_id}
-                  className="shadow"
+                  // className="shadow"
                 >
                   {mappedAuthors?.map((author) => {
                     return (
-                      <option key={author.id} value={author.id}>
+                      <option
+                        key={author.id}
+                        value={author.id}
+                        // className="bg-primary bg-opacity-50"
+                      >
                         {author.name}
                       </option>
                     );
@@ -235,7 +239,7 @@ export default function EditBook(props) {
                     })
                   }
                   isInvalid={!!errors.genre_id}
-                  className="shadow"
+                  //className="shadow"
                 >
                   {mappedGenres?.map((genre) => {
                     return (
@@ -268,7 +272,7 @@ export default function EditBook(props) {
                   isInvalid={!!errors.price}
                   required
                   autoComplete="off"
-                  className="shadow"
+                  //className="shadow"
                 />
                 <Form.Control.Feedback type="invalid" tooltip>
                   {errors.price}
@@ -296,7 +300,7 @@ export default function EditBook(props) {
                   required
                   max={new Date()?.toISOString()?.slice(0, 10)}
                   autoComplete="off"
-                  className="shadow"
+                  //className="shadow"
                 />
                 <Form.Control.Feedback type="invalid" tooltip>
                   {errors.publication_date}

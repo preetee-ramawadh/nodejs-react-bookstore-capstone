@@ -7,24 +7,24 @@ export default function AuthorDetails(props) {
   return (
     <Modal
       {...props}
-      size="md"
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       backdrop="static"
       keyboard={false}
       centered
     >
-      <Modal.Header closeButton className="bg-dark text-light text-capitalize">
+      <Modal.Header closeButton className="bg-info text-dark text-capitalize">
         <Placeholder
           as={Modal.Title}
           animation="glow"
           id="contained-modal-title-vcenter"
         >
-          <Placeholder bg="dark">
+          <Placeholder bg="info">
             <strong>{props.selectedauthor.name}</strong>
           </Placeholder>
         </Placeholder>
       </Modal.Header>
-      <Modal.Body className="bg-secondary bg-opacity-50">
+      <Modal.Body className="bg-info bg-opacity-25">
         <h3 className="text-center">
           <strong>Biography</strong>
         </h3>
@@ -35,23 +35,25 @@ export default function AuthorDetails(props) {
           <strong>Penned Books</strong>
         </h3>
 
-        <ul className="text-dark">
-          {props.selectedauthor.Books?.length > 0 ? (
-            props.selectedauthor.Books?.map((book) => (
-              <li key={book.book_id}>
-                <h4>
-                  <i>{book.title}</i>
-                </h4>
-              </li>
-            ))
-          ) : (
-            <h4>
-              <i>No Books available here</i>
-            </h4>
-          )}
-        </ul>
+        <ol className="text-dark">
+          <strong>
+            {props.selectedauthor.Books?.length > 0 ? (
+              props.selectedauthor.Books?.map((book) => (
+                <li key={book.book_id}>
+                  <h5>
+                    <i>{book.title}</i>
+                  </h5>
+                </li>
+              ))
+            ) : (
+              <h4>
+                <i>No Books available here</i>
+              </h4>
+            )}
+          </strong>
+        </ol>
       </Modal.Body>
-      <Modal.Footer className="bg-secondary">
+      <Modal.Footer className="bg-info bg-opacity-50">
         <Button variant="outline-dark rounded-pill" onClick={props.onHide}>
           Close
         </Button>

@@ -53,17 +53,14 @@ export default function AllAuthors({
         console.log("jsonData", jsonData);
         setListOfAuthors(jsonData);
 
-        /**populate images from genres table in an imgURL array */
+        // Create a dictionary of images keyed by book ID
+        const imgURLDictionary = jsonData.reduce((acc, author) => {
+          acc[author.author_id] = author.image_url;
+          return acc;
+        }, {});
 
-        // Extract or transform data from the dataset
-        const imgURL = jsonData.map((a) => ({
-          id: a.author_id,
-          imageUrl: a.image_url,
-        }));
-
-        // Update the state with the constructed array
-        setImgURLArray(imgURL);
-        console.log("Authors imgURlArray:", imgURlArray);
+        setImgURLArray(imgURLDictionary);
+        console.log("author imgURlArray:", imgURLDictionary);
 
         setLoading(false);
       } catch (error) {
@@ -147,7 +144,7 @@ export default function AllAuthors({
           value="Author"
         />
         <Button
-          variant="outline-secondary"
+          variant="secondary border-dark"
           onClick={() => setAddShow(true)}
           className="shadow border border-dark fw-bold ms-1 rounded-pill"
           style={{ width: "99%" }}
@@ -196,7 +193,7 @@ export default function AllAuthors({
       {currentRecords?.length > 0 ? (
         currentRecords.map((author, key) => {
           const imgUrl =
-            imgURlArray[key]?.imageUrl ||
+            imgURlArray[author.author_id] ||
             "/images/authors/imagesunavailable.jpg";
 
           return (
@@ -205,6 +202,8 @@ export default function AllAuthors({
                 className="border rounded-pill text-center overflow-hidden border-2 border-start-0 border-top-0"
                 style={{
                   borderRadius: "0 0 4em 0",
+                  height: "360px",
+                  width: "250px",
                   maxHeight: "500px",
                   maxWidth: "250px",
                 }}
@@ -218,7 +217,7 @@ export default function AllAuthors({
                   style={{ maxHeight: "200px", maxWidth: "250px" }}
                 />
 
-                <Card.Body className="bg-dark">
+                <Card.Body className="bg-secondary">
                   <Card.Link
                     id={author.author_id}
                     href="#"
@@ -230,7 +229,7 @@ export default function AllAuthors({
                     {author.name}
                   </Card.Link>
                 </Card.Body>
-                <Card.Footer className="border-0 bg-dark text-center">
+                <Card.Footer className="border-0 bg-secondary text-center">
                   <Button
                     variant="outline-primary"
                     onClick={() => {
@@ -254,12 +253,6 @@ export default function AllAuthors({
                 </Card.Footer>
               </Card>
 
-              <AuthorDetails
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                selectedauthor={selectedauthor}
-              />
-
               <EditAuthor
                 show={showEditAuthorModal}
                 onHide={() => setShowEditAuthorModal(false)}
@@ -272,6 +265,12 @@ export default function AllAuthors({
       ) : (
         <h1>No Authors Present!!</h1>
       )}
+
+      <AuthorDetails
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        selectedauthor={selectedauthor}
+      />
     </div>
   );
 }

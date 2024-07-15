@@ -61,7 +61,7 @@ export default function AddGenre({
           <Form
             noValidate
             onSubmit={handleSubmit}
-            className="mt-3 p-2 outline-secondary shadow bg-secondary"
+            className="mt-3 p-2 outline-secondary shadow bg-secondary-subtle"
           >
             <Row className="mb-3 mt-2">
               <Col md="4"></Col>
@@ -100,7 +100,7 @@ export default function AddGenre({
                 <Button
                   type="submit"
                   variant="success"
-                  className="border-light shadow rounded-pill"
+                  className="border-dark shadow rounded-pill"
                   disabled={isSubmitting}
                 >
                   Add Genre
@@ -110,7 +110,7 @@ export default function AddGenre({
                 <Button
                   variant="dark"
                   onClick={() => setAddShow(false)}
-                  className="border-light shadow rounded-pill"
+                  className="border-dark shadow rounded-pill"
                 >
                   Close
                 </Button>

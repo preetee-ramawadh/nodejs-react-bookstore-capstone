@@ -127,9 +127,9 @@ export default function AddBook({
           <Form
             noValidate
             onSubmit={handleSubmit}
-            className="mt-3 border border-secondary border-2 shadow bg-secondary"
+            className="mt-3 p-2 shadow bg-secondary-subtle"
           >
-            <Row className="mb-3 mt-2">
+            <Row className="m-2">
               <Form.Group as={Col} controlId="validationFormik01" md="6">
                 <InputGroup hasValidation>
                   <InputGroup.Text id="inputGroupPrependTitle">
@@ -212,7 +212,7 @@ export default function AddBook({
               </Form.Group>
             </Row>
 
-            <Row className=" mt-3 mb-3">
+            <Row className="m-2">
               <Form.Group as={Col} controlId="validationFormik04" md="6">
                 <InputGroup hasValidation>
                   <InputGroup.Text id="inputGroupPrependPrice">
@@ -275,7 +275,7 @@ export default function AddBook({
                   type="submit"
                   variant="success"
                   disabled={isSubmitting}
-                  className="border shadow rounded-pill"
+                  className="border border-dark shadow rounded-pill mb-2"
                 >
                   Add Book
                 </Button>
@@ -284,7 +284,7 @@ export default function AddBook({
                 <Button
                   onClick={() => setAddShow(false)}
                   variant="dark"
-                  className="border shadow rounded-pill"
+                  className="border border-dark shadow rounded-pill"
                 >
                   Close
                 </Button>
