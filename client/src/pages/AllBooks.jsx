@@ -148,30 +148,19 @@ export default function AllBooks({
   return (
     <div className="row">
       <div className="fixed-container fa-secondary">
-        <DeleteAlertBook
-          alertShow={alertShow}
-          setAlertShow={setAlertShow}
-          listOfBooks={listOfBooks}
-          setListOfBooks={setListOfBooks}
-          booktodelete={booktodelete}
-        />
-        <Button
-          variant="secondary border-dark"
-          onClick={() => addBook()}
-          className="border border-dark shadow fw-bold ms-1 rounded-pill"
-          style={{ width: "99%" }}
-        >
-          ~~~~~~~~~~~~~ADD A BOOK~~~~~~~~~~~~~
-        </Button>
-
-        <AddBook
-          addShow={addShow}
-          setAddShow={setAddShow}
-          listOfBooks={listOfBooks}
-          setListOfBooks={setListOfBooks}
-        />
-
-        <Nav className="justify-content-end mt-3">
+        <Nav className="justify-content-end">
+          <Nav.Item style={{ width: "auto" }}>
+            <Nav.Link style={{ height: "auto" }}>
+              <Button
+                variant="secondary border-dark"
+                onClick={() => addBook()}
+                className="border border-dark shadow fw-bold ms-1 rounded-pill"
+                style={{ width: "100%" }}
+              >
+                +
+              </Button>
+            </Nav.Link>
+          </Nav.Item>
           <Nav.Item style={{ width: "auto" }}>
             <Nav.Link style={{ height: "auto" }}>
               <SortBookPrice
@@ -193,7 +182,7 @@ export default function AllBooks({
               />
             </Nav.Link>
           </Nav.Item>
-          <Nav.Item style={{ width: "50%" }}>
+          <Nav.Item style={{ width: "45%" }}>
             <Nav.Link eventKey="link-2" style={{ height: "auto" }}>
               <Form.Control
                 onChange={(e) => {
@@ -206,10 +195,23 @@ export default function AllBooks({
           </Nav.Item>
         </Nav>
 
+        <AddBook
+          addShow={addShow}
+          setAddShow={setAddShow}
+          listOfBooks={listOfBooks}
+          setListOfBooks={setListOfBooks}
+        />
         <PaginationOnData
           nPages={nPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+        />
+        <DeleteAlertBook
+          alertShow={alertShow}
+          setAlertShow={setAlertShow}
+          listOfBooks={listOfBooks}
+          setListOfBooks={setListOfBooks}
+          booktodelete={booktodelete}
         />
       </div>
       {currentRecords?.length > 0 ? (
@@ -218,7 +220,7 @@ export default function AllBooks({
             imgURlArray[book.book_id] || "/images/books/imageunavailable.jpg";
 
           return (
-            <div key={key} className="col mt-3 ">
+            <div key={key} className="col mt-3">
               <Card
                 style={{
                   borderRadius: "0 2em 0 0",
@@ -227,7 +229,7 @@ export default function AllBooks({
                   maxHeight: "500px",
                   maxWidth: "280px",
                 }}
-                className="overflow-hidden border border-2 border-start-0 border-top-0"
+                className="overflow-hidden border border-2"
               >
                 <Card.Img
                   variant="top"
@@ -273,20 +275,18 @@ export default function AllBooks({
                   </Button>
                 </Card.Footer>
               </Card>
-
-              <EditBook
-                show={modalEditShow}
-                onHide={() => setModalEditShow(false)}
-                selectedbook={selectedbook}
-                updatebook={updatebook}
-              />
             </div>
           );
         })
       ) : (
         <h1>No books available!!</h1>
       )}
-
+      <EditBook
+        show={modalEditShow}
+        onHide={() => setModalEditShow(false)}
+        selectedbook={selectedbook}
+        updatebook={updatebook}
+      />
       <BookDetails
         show={modalShow}
         onHide={() => setModalShow(false)}

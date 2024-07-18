@@ -70,7 +70,6 @@ export default function EditAuthor(props) {
       backdrop="static"
       keyboard={false}
       centered
-      className="bg-secondary bg-opacity-10"
     >
       <Modal.Header closeButton className="bg-primary bg-opacity-25">
         <Modal.Title>Edit Author Details</Modal.Title>

@@ -150,7 +150,6 @@ export default function EditBook(props) {
       backdrop="static"
       keyboard={false}
       centered
-      className="bg-secondary bg-opacity-10"
     >
       <Modal.Header closeButton className="bg-primary bg-opacity-75">
         <Modal.Title id="contained-modal-title-vcenter">

@@ -29,21 +29,6 @@ export default function BookDetails(props) {
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-info bg-opacity-25">
-        {/* <h4 className="text-capitalize">
-          <strong>Author:</strong>
-          {props.selectedbook.Author?.name}
-        </h4>
-        <h4>
-          <strong>Genre:</strong> {props.selectedbook.Genre?.genre_name}
-        </h4>
-        <h4>
-          <strong>Price:</strong>
-          {props.selectedbook.price}
-        </h4>
-        <h4>
-          <strong>Published On:</strong> {props.selectedbook.publication_date}
-        </h4> */}
-
         <Table variant="info" className="border border-info">
           <tbody>
             <tr>

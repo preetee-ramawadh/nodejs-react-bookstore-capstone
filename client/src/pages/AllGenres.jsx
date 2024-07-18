@@ -108,22 +108,20 @@ export default function AllGenres({
   return (
     <div className="row">
       <div className="fixed-container">
-        <Button
-          variant="secondary border-dark"
-          onClick={() => setAddShow(true)}
-          className="border border-dark shadow fw-bold ms-1 rounded-pill"
-          style={{ width: "99%" }}
-        >
-          ~~~~~~~~~~~~~ADD A GENRE~~~~~~~~~~~~~
-        </Button>
-        <AddGenre
-          addShow={addShow}
-          setAddShow={setAddShow}
-          listOfGenres={listOfGenres}
-          setListOfGenres={setListOfGenres}
-        />
-
-        <Nav className="justify-content-end mt-3">
+        <Nav className="justify-content-end">
+          <Nav.Item style={{ width: "auto" }}>
+            <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
+              {" "}
+              <Button
+                variant="secondary border-dark"
+                onClick={() => setAddShow(true)}
+                className="border border-dark shadow fw-bold ms-1 rounded-pill"
+                style={{ width: "100%" }}
+              >
+                +
+              </Button>
+            </Nav.Link>
+          </Nav.Item>
           <Nav.Item style={{ width: "auto" }}>
             <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
               {" "}
@@ -147,6 +145,13 @@ export default function AllGenres({
             </Nav.Link>
           </Nav.Item>
         </Nav>
+
+        <AddGenre
+          addShow={addShow}
+          setAddShow={setAddShow}
+          listOfGenres={listOfGenres}
+          setListOfGenres={setListOfGenres}
+        />
 
         <PaginationOnData
           nPages={nPages}

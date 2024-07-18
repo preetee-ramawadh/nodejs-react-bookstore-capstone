@@ -135,31 +135,21 @@ export default function AllAuthors({
   return (
     <div className="row">
       <div className="fixed-container">
-        <DeleteAlertAuthor
-          alertShow={alertShow}
-          setAlertShow={setAlertShow}
-          listOfAuthors={listOfAuthors}
-          setListOfAuthors={setListOfAuthors}
-          authoridtodelete={authoridtodelete}
-          value="Author"
-        />
-        <Button
-          variant="secondary border-dark"
-          onClick={() => setAddShow(true)}
-          className="shadow border border-dark fw-bold ms-1 rounded-pill"
-          style={{ width: "99%" }}
-        >
-          ~~~~~~~~~~~~~ADD AN AUTHOR~~~~~~~~~~~~~
-        </Button>
+        <Nav className="justify-content-end">
+          <Nav.Item style={{ width: "auto" }}>
+            <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
+              {" "}
+              <Button
+                variant="secondary border-dark"
+                onClick={() => setAddShow(true)}
+                className="shadow border border-dark fw-bold ms-1 rounded-pill"
+                style={{ width: "100%" }}
+              >
+                +
+              </Button>
+            </Nav.Link>
+          </Nav.Item>
 
-        <AddAuthor
-          addShow={addShow}
-          setAddShow={setAddShow}
-          listOfAuthors={listOfAuthors}
-          setListOfAuthors={setListOfAuthors}
-        />
-
-        <Nav className="justify-content-end mt-3">
           <Nav.Item style={{ width: "auto" }}>
             <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
               {" "}
@@ -184,10 +174,26 @@ export default function AllAuthors({
           </Nav.Item>
         </Nav>
 
+        <AddAuthor
+          addShow={addShow}
+          setAddShow={setAddShow}
+          listOfAuthors={listOfAuthors}
+          setListOfAuthors={setListOfAuthors}
+        />
+
         <PaginationOnData
           nPages={nPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+        />
+
+        <DeleteAlertAuthor
+          alertShow={alertShow}
+          setAlertShow={setAlertShow}
+          listOfAuthors={listOfAuthors}
+          setListOfAuthors={setListOfAuthors}
+          authoridtodelete={authoridtodelete}
+          value="Author"
         />
       </div>
       {currentRecords?.length > 0 ? (
@@ -252,19 +258,19 @@ export default function AllAuthors({
                   </Button>
                 </Card.Footer>
               </Card>
-
-              <EditAuthor
-                show={showEditAuthorModal}
-                onHide={() => setShowEditAuthorModal(false)}
-                selectedauthor={selectedauthor}
-                updateauthor={updateauthor}
-              />
             </div>
           );
         })
       ) : (
         <h1>No Authors Present!!</h1>
       )}
+
+      <EditAuthor
+        show={showEditAuthorModal}
+        onHide={() => setShowEditAuthorModal(false)}
+        selectedauthor={selectedauthor}
+        updateauthor={updateauthor}
+      />
 
       <AuthorDetails
         show={modalShow}

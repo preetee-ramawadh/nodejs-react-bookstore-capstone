@@ -280,11 +280,11 @@ a:hover {
   background: var(--bg-secondary);
   /* border-bottom: 1px solid #ddd; */
   z-index: 10; /* Ensures it stays above other content */
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .fixed-item {
-  margin-bottom: 10px;
+  margin-bottom: 3px;
 }
 
 .pagination {
