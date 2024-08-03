@@ -152,9 +152,9 @@ export default function AllBooks({
           <Nav.Item style={{ width: "auto" }}>
             <Nav.Link style={{ height: "auto" }}>
               <Button
-                variant="secondary border-dark"
+                variant="outline-danger"
                 onClick={() => addBook()}
-                className="border border-dark shadow fw-bold ms-1 rounded-pill"
+                className="rounded-circle border fw-bold text-secondary border-secondary"
                 style={{ width: "100%" }}
               >
                 +
@@ -224,8 +224,8 @@ export default function AllBooks({
               <Card
                 style={{
                   borderRadius: "0 2em 0 0",
-                  height: "380px",
-                  width: "265px",
+                  height: "350px",
+                  width: "250px",
                   maxHeight: "500px",
                   maxWidth: "280px",
                 }}
@@ -237,8 +237,8 @@ export default function AllBooks({
                   alt="no image"
                   style={{
                     maxHeight: "250px",
-                    width: "265px",
-                    height: "220px",
+                    width: "250px",
+                    height: "200px",
                   }}
                 />
                 <Card.Body className="text-center bg-secondary">
@@ -248,7 +248,7 @@ export default function AllBooks({
                     onClick={() => {
                       showBookDetails(book);
                     }}
-                    className="text-light text-capitalize text-decoration-none fs-4"
+                    className="text-light text-capitalize text-decoration-none fs-5"
                   >
                     {book.title}
                   </Card.Link>

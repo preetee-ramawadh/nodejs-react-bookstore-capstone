@@ -113,9 +113,9 @@ export default function AllGenres({
             <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
               {" "}
               <Button
-                variant="secondary border-dark"
+                variant="outline-danger"
                 onClick={() => setAddShow(true)}
-                className="border border-dark shadow fw-bold ms-1 rounded-pill"
+                className="rounded-circle border fw-bold text-secondary border-secondary"
                 style={{ width: "100%" }}
               >
                 +

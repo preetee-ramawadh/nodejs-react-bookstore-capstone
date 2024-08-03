@@ -140,9 +140,9 @@ export default function AllAuthors({
             <Nav.Link eventKey="link-1" style={{ height: "auto" }}>
               {" "}
               <Button
-                variant="secondary border-dark"
+                variant="outline-danger"
                 onClick={() => setAddShow(true)}
-                className="shadow border border-dark fw-bold ms-1 rounded-pill"
+                className="rounded-circle border fw-bold text-secondary border-secondary"
                 style={{ width: "100%" }}
               >
                 +
