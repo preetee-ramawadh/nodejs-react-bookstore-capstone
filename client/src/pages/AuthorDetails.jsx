@@ -28,9 +28,9 @@ export default function AuthorDetails(props) {
         <h3 className="text-center">
           <strong>Biography</strong>
         </h3>
-        <h4>
+        <p>
           <i>{props.selectedauthor.biography}</i>
-        </h4>
+        </p>
         <h3 className="text-center">
           <strong>Penned Books</strong>
         </h3>
