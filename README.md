@@ -127,3 +127,11 @@ Include in your repo's README file:
 an overview of the project
 instructions on how to set up and run your web application
 sample screen shots of interesting features
+
+------------------------INSTRUCTIONS FOR PROJECT SETUP---------------------
+open the project folder in vs code
+In the terminal, navigate to the server folder using cd command and then run command "npm start"
+
+Message shown in console will be "Connection has been established successfully." and port number will be 5000
+
+open another terminal and navigate to client folder and run command "npm start"
